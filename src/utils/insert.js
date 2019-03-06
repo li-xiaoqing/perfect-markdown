@@ -53,7 +53,7 @@ function fileInsert(dom, payload, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
 
@@ -89,7 +89,7 @@ function linkInsert(dom, payload, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
 
@@ -128,7 +128,7 @@ function imageInsert(dom, payload, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
 
@@ -168,7 +168,7 @@ function txtInsert(dom, icon, payload, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
 
@@ -219,7 +219,7 @@ export function insertEnter(textArea, e, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
 
@@ -247,7 +247,7 @@ export function insertTab(textArea, e, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
 // shift + tab
@@ -268,6 +268,6 @@ export function unInsertTab(textArea, e, $vue) {
             textArea.focus()
         })
     } else {
-        console.log('the browser version is too low')
+        console.warn('the browser version is too low')
     }
 }
