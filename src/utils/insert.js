@@ -177,6 +177,8 @@ export function insertEnter(textArea, e, $vue) {
     if ('selectionStart' in textArea) {
         const start = textArea.selectionStart
         const end = textArea.selectionEnd
+        let newStart = 0
+        let newEnd = 0
         let content = textArea.value
         // get cursor lastLine
         let lastLine = content.substring(0, start).split('\n').pop()
@@ -189,12 +191,14 @@ export function insertEnter(textArea, e, $vue) {
             if (subfix.search(/-/) >= 0) {
                 // ul
                 content = content.substring(0, start) + '\n' + subfix + content.substring(end, content.length)
-                textArea.setSelectionRange(start + subfix.length + 1, start + subfix.length + 1)
+                newStart = start + subfix.length + 1
+                newEnd = start + subfix.length + 1
             } else {
                 // ol
                 let temp = subfix.replace(/(\d+)/, parseInt(subfix) + 1)
                 content = content.substring(0, start) + '\n' + temp + content.substring(end, content.length)
-                textArea.setSelectionRange(start + temp.length + 1, start + temp.length + 1)
+                newStart = start + temp.length + 1
+                newEnd = start + temp.length + 1
             }
         } else {
             let matchListNeedRemoveLine = lastLine.match(/^\s*(?:[0-9]+\.|-)\s+$/)
@@ -202,11 +206,16 @@ export function insertEnter(textArea, e, $vue) {
                 e.preventDefault()
                 let preLength = matchListNeedRemoveLine.shift().length
                 content = content.substring(0, start - preLength) + '\n' + content.substring(end, content.length)
-                textArea.setSelectionRange(start - preLength, start - preLength)
+                newStart = start - preLength
+                newEnd = start - preLength
+            } else {
+                newStart = start
+                newEnd = end
             }
         }
         $vue.setTextareaContent(content)
         $vue.$nextTick(() => {
+            textArea.setSelectionRange(newStart, newEnd)
             textArea.focus()
         })
     } else {
