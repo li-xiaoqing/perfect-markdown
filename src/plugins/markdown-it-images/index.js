@@ -20,7 +20,6 @@ export default function (md, config) {
         let styleAttr = null
         if (tokens[idx].type === 'image') {
             const start = tokens[idx].content.indexOf('=')
-            console.log(start)
             let result = parseImageSize(tokens[idx].content, start, tokens[idx].content.length)
             if (result.ok) {
                 // 兼容 百分比写法
