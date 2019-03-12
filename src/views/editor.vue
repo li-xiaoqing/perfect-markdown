@@ -188,7 +188,7 @@ export default {
             } else {
                 const reader = new FileReader()
                 reader.onload = (e) => {
-                    md.image_add(index, e.target.result) // plugin
+                    md.imageAdd(index, e.target.result) // plugin
                     insertContentAtCaret(this.getTextarea, 'image', { name: file.name, url: index }, this)
                 }
 

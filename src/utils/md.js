@@ -27,8 +27,7 @@ import mdhl from '../plugins/markdown-it-highlight/'
 // math katex
 import katex from 'markdown-it-katex' // todos: dynamic import
 // local图片插件
-import miip from 'markdown-it-images-preview'
-
+import miip from '../plugins/markdown-it-images'
 // todos: inject merge
 const plugins = {
     emoji: emoji,
@@ -93,6 +92,12 @@ md.init = function (config) {
     for (let key in mergeConfig) {
         if (plugins[key]) {
             mergeConfig[key] && md.use(plugins[key])
+            // add container
+            if (key === 'container') {
+                md.use(plugins[key], 'hljs-left') /* align left */
+                md.use(plugins[key], 'hljs-center')/* align center */
+                md.use(plugins[key], 'hljs-right')/* align right */
+            }
         }
     }
 }
