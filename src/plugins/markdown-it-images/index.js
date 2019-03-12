@@ -20,6 +20,7 @@ export default function (md, config) {
         let styleAttr = null
         if (tokens[idx].type === 'image') {
             const start = tokens[idx].content.indexOf('=')
+            console.log(start)
             let result = parseImageSize(tokens[idx].content, start, tokens[idx].content.length)
             if (result.ok) {
                 // 兼容 百分比写法
@@ -31,15 +32,31 @@ export default function (md, config) {
 
         let _attrs = tokens[idx].attrs
         if (md.__image instanceof Object) {
-            for (let i = 0; i < _attrs.length; i++) {
-                if (_attrs[i][0] === 'src' && md.__image.hasOwnProperty(tokens[idx].attrs[i][1])) {
-                    _attrs.push(['rel', _attrs[i][1]])
-                    styleAttr && _attrs.push(styleAttr) // inject style
-                    _attrs[i][1] = md.__image[tokens[idx].attrs[i][1]]
-                    break
-                }
-            }
+            localAttrHandler(_attrs, styleAttr, md, tokens, idx)
+        } else {
+            inputAttrHandler(_attrs, styleAttr)
         }
         return imagedefault(tokens, idx, options, env, slf)
+    }
+}
+
+function localAttrHandler(_attrs, styleAttr, md, tokens, idx) {
+    for (let i = 0; i < _attrs.length; i++) {
+        if (_attrs[i][0] === 'src' && md.__image.hasOwnProperty(tokens[idx].attrs[i][1])) {
+            _attrs.push(['rel', _attrs[i][1]])
+            styleAttr && _attrs.push(styleAttr) // inject style
+            _attrs[i][1] = md.__image[tokens[idx].attrs[i][1]]
+            break
+        } else {
+            styleAttr && _attrs.push(styleAttr) // modify local img
+            break
+        }
+    }
+}
+
+function inputAttrHandler(_attrs, styleAttr) {
+    for (let i = 0; i < _attrs.length; i++) {
+        styleAttr && _attrs.push(styleAttr) // inject style direct input
+        break
     }
 }
