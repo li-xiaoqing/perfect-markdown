@@ -4,7 +4,7 @@
         <div
             class="pmd-editor"
         >
-            <pmd :showTextarea="true" :showToolbar="true" v-model="value" :uploadImgFn="fileUplod" :uploadFileFn="fileUplod" :plugins="{katex: true}"></pmd>
+            <pmd :showTextarea="true" :showToolbar="true" v-model="value" :uploadFileFn="fileUplod" :plugins="{katex: true}"></pmd>
         </div>
     </div>
 </template>

@@ -11,7 +11,7 @@ module.exports = {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         "vue/html-indent": ["error", 4], // html
-        "indent": [2, 4], // js
+        "indent": [2, 4, { "SwitchCase": 1 }], // js
         'space-before-function-paren': [2, {
             'anonymous': 'always',
             'named': 'never'
