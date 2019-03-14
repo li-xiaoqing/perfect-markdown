@@ -85,9 +85,16 @@ function helloJS() {
 
 ## 图片
 ```
-![图片描述](https://www.baidu.com/img/baidu_jgylogo3.gif)
+支持控制宽或者高=宽x高
+![图片描述 =117x38](https://www.baidu.com/img/baidu_jgylogo3.gif)
+![图片描述 =58x](https://www.baidu.com/img/baidu_jgylogo3.gif)
+![图片描述 =80%x](https://www.baidu.com/img/baidu_jgylogo3.gif)
 ```
-![图片描述](https://www.baidu.com/img/baidu_jgylogo3.gif)
+![图片描述 =117x38](https://www.baidu.com/img/baidu_jgylogo3.gif)
+
+![图片描述 =58x](https://www.baidu.com/img/baidu_jgylogo3.gif)
+
+![图片描述 =80%x](https://www.baidu.com/img/baidu_jgylogo3.gif)
 
 ## 表格(table)
 ```
