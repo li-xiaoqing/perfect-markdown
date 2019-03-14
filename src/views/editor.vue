@@ -116,6 +116,13 @@ export default {
         customRightToolbar: {
             type: Boolean,
             default: false
+        },
+        imgWidthHeightAttr: {
+            type: Object,
+            default: () => ({
+                width: false,
+                height: false
+            })
         }
     },
     components: {
@@ -183,17 +190,39 @@ export default {
         },
         async addImg(index, file) {
             const ret = await this.uploadImgFn(file)
+            // width height
+            let wh = {}
+            let payload = { name: file.name }
+            if (this.imgWidthHeightAttr.width || this.imgWidthHeightAttr.height) {
+                wh = await this.getWH(file)
+                this.imgWidthHeightAttr.width && (payload.width = wh.width)
+                this.imgWidthHeightAttr.height && (payload.height = wh.height)
+            }
             if (ret.upload) {
-                insertContentAtCaret(this.getTextarea, 'image', { name: file.name, url: ret.url }, this)
+                payload.url = ret.url
+                insertContentAtCaret(this.getTextarea, 'image', payload, this)
             } else {
                 const reader = new FileReader()
                 reader.onload = (e) => {
                     md.imageAdd(index, e.target.result) // plugin
-                    insertContentAtCaret(this.getTextarea, 'image', { name: file.name, url: index }, this)
+                    payload.url = index
+                    insertContentAtCaret(this.getTextarea, 'image', payload, this)
                 }
 
                 file && reader.readAsDataURL(file)
             }
+        },
+        async getWH(file) {
+            return new Promise((resolve, reject) => {
+                const image = new Image()
+                image.onload = () => {
+                    const width = image.width
+                    const height = image.height
+                    resolve({ width, height })
+                }
+                image.onerror = reject
+                image.src = URL.createObjectURL(file)
+            })
         },
         async addFile(file) {
             const ret = await this.uploadFileFn(file)

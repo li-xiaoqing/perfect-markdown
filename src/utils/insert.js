@@ -102,9 +102,22 @@ function imageInsert(dom, payload, $vue) {
         const end = textArea.selectionEnd
         let newStart = 0
         let newEnd = 0
+        let imgContent = ''
+        if (payload.width || payload.height) {
+            if (payload.width && payload.height) {
+                imgContent = `![${payload.name} =${payload.width}x${payload.height}](${payload.url})`
+            } else if (!payload.width) {
+                imgContent = `![${payload.name} =x${payload.height}](${payload.url})`
+            } else {
+                imgContent = `![${payload.name} =${payload.width}x](${payload.url})`
+            }
+        } else {
+            imgContent = `![${payload.name}](${payload.url})`
+        }
         if (start === end) {
             // insert
-            content = content.substring(0, start) + `![${payload.name}](${payload.url})` + content.substring(end, content.length)
+
+            content = content.substring(0, start) + imgContent + content.substring(end, content.length)
             if (isLocal(payload.url)) {
                 newStart = newEnd = content.length
             } else {
@@ -113,7 +126,7 @@ function imageInsert(dom, payload, $vue) {
             }
         } else { // selected
             // select insert, ignore the input url
-            content = content.substring(0, start) + `[${payload.name}](${payload.url})${content.substring(start, end)}` + content.substring(end, content.length)
+            content = content.substring(0, start) + imgContent + content.substring(end, content.length)
             if (isLocal(payload.url)) {
                 newStart = newEnd = content.length
             } else {

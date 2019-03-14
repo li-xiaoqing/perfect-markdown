@@ -31,6 +31,7 @@ $ npm install perfect-markdown --save
         :uploadImgFn="uploadFn"
         :uploadFileFn="uploadFn"
         :plugins="{katex: true}"
+        :imgWidthHeightAttr="{width: true, height: false}"
     ></pmd>
 </div>
 ```
@@ -57,6 +58,7 @@ $ npm install perfect-markdown --save
 |  plugins        | Object   |   {}    | katex or mathjax plugin, { katex: true } or { mathjax: true }. (mathjax  is more powerful than katex, but it rendering efficiency is lower) |
 |  customLeftToolbar |   Boolean  |    false   |       |
 |  customRightToolbar |   Boolean  |    false   |       |
+|  imgWidthHeightAttr |   Object  |    {width: false, height: false}   | this is default output \[name](url), and all true will output \[name =WxH](url)      |
 | ...          | ...      |   ...   | ....                                                       |
 
 #### upload img file
@@ -133,7 +135,7 @@ export default {
 ```
 
 ## Changelog
-    
+
 Detailed changes for each release are documented in the [release notes](https://github.com/li-xiaoqing/perfect-markdown/releases).
 
 ## Licence
