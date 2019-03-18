@@ -41,10 +41,14 @@
                     <div v-html="renderValue">
 
                     </div>
-
                 </div>
-
+                <transition name="fade">
+                    <div @click="imgPreviewSrc=null" class="img-preview" v-if="imgPreviewSrc">
+                        <img :src="imgPreviewSrc" alt="预览">
+                    </div>
+                </transition>
             </div>
+
             <div ref="copyHtml" class="copy-html">
                 <div v-html="renderValue">
 
@@ -70,6 +74,7 @@ export default {
     name: 'editor',
     data() {
         return {
+            imgPreviewSrc: null
         }
     },
     props: {
@@ -123,6 +128,10 @@ export default {
                 width: false,
                 height: false
             })
+        },
+        imageClickHandler: {
+            type: Function,
+            default: null
         }
     },
     components: {
@@ -132,6 +141,7 @@ export default {
     },
     mounted() {
         this.showToolbar && keyboardListener(this.getTextarea(), this)
+        this.imagePreviewListener()
         this.localValue = this.value
     },
     async created() {
@@ -251,6 +261,20 @@ export default {
                 })
             }
             return md.render(result)
+        },
+        imagePreviewListener() {
+            // renderHtml img click
+            this.$refs.renderHtml.addEventListener('click', e => {
+                const event = e || window.event
+                const ele = event.srcElement || event.target
+                if (ele.tagName === 'IMG') {
+                    if (this.imageClickHandler) {
+                        this.imageClickHandler(ele)
+                    } else {
+                        this.imgPreviewSrc = ele.src
+                    }
+                }
+            })
         }
     },
     watch: {
@@ -296,6 +320,19 @@ export default {
         .markdown-body {
             display: flex;
             min-height: 400px;
+            .img-preview {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 1600;
+                transition: all 0.1s linear 0s;
+            }
 
             .markdown-input {
                 padding: 10px 20px;
