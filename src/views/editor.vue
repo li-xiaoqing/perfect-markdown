@@ -44,7 +44,21 @@
                 </div>
                 <transition name="fade">
                     <div @click="imgPreviewSrc=null" class="img-preview" v-if="imgPreviewSrc">
-                        <img :src="imgPreviewSrc" alt="预览">
+                        <div class="img-box" >
+                            <img
+                                :src="imgPreviewSrc"
+                                alt="预览"
+                                :style="{
+                                    width: `${imgWidth}`
+                                }"/>
+                            <div
+                                class="img-op"
+                                @click="opClick"
+                            >
+                                <i class="iconfont icon-zoom-in" @click="zoomIn"></i>
+                                <i class="iconfont icon-zoom-out" @click="zoomOut"></i>
+                            </div>
+                        </div>
                     </div>
                 </transition>
             </div>
@@ -74,7 +88,9 @@ export default {
     name: 'editor',
     data() {
         return {
-            imgPreviewSrc: null
+            imgPreviewSrc: null,
+            imgWidth: '70%',
+            zoomStep: 10
         }
     },
     props: {
@@ -275,6 +291,21 @@ export default {
                     }
                 }
             })
+        },
+        opClick(e) {
+            e.stopPropagation()
+            e.preventDefault()
+            return false
+        },
+        zoomIn() {
+            let width = +this.imgWidth.split('%')[0]
+            let result = width - this.zoomStep > 0 ? width - this.zoomStep : 0
+            this.imgWidth = `${result}%`
+        },
+        zoomOut() {
+            let width = +this.imgWidth.split('%')[0]
+            let result = width + this.zoomStep > 0 ? width + this.zoomStep : 0
+            this.imgWidth = `${result}%`
         }
     },
     watch: {
@@ -332,6 +363,35 @@ export default {
                 background: rgba(0, 0, 0, 0.7);
                 z-index: 1600;
                 transition: all 0.1s linear 0s;
+                .img-box {
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    img {
+                        max-width: initial;
+                        position: relative;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+                    .img-op {
+                        position: absolute;
+                        left: 50%;
+                        bottom: 20px;
+                        background-color: #333333;
+                        border-radius: 5px;
+                        padding: 0 12px;
+                        i {
+                            display: inline-block;
+                            font-size: 20px;
+                            padding: 10px;
+                            color: #fff;
+                            &:hover {
+                                background: #e9e8e8;
+                                color: #333;
+                            }
+                        }
+                    }
+                }
             }
 
             .markdown-input {
