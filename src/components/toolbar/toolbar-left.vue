@@ -181,11 +181,9 @@ export default {
             } else if (type === 'clear') {
                 this.clearContent(icon)
             } else {
-                console.log('default')
             }
         },
         menuHandler(icon) {
-            console.log(icon)
         },
         popHandler(icon) {
             if (icon === 'link') {

@@ -73,7 +73,6 @@ export default {
             } else if (icon === 'fullscreen') {
                 this.setEditorFullscreenType(this.iconActive[icon])
             } else {
-                console.log('unkwon')
             }
         },
         ...mapActions({
