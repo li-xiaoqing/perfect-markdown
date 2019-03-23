@@ -369,9 +369,12 @@ export default {
                     overflow: auto;
                     img {
                         max-width: initial;
-                        position: relative;
-                        top: 50%;
-                        transform: translateY(-50%);
+                        position: absolute;
+                        margin: auto;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
                     }
                     .img-op {
                         position: absolute;
