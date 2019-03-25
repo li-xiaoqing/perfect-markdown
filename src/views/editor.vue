@@ -49,7 +49,7 @@
                                 :src="imgPreviewSrc"
                                 alt="预览"
                                 :style="{
-                                    width: `${imgWidth}`
+                                    height: `${imgHeight}`
                                 }"/>
                             <div
                                 class="img-op"
@@ -89,7 +89,7 @@ export default {
     data() {
         return {
             imgPreviewSrc: null,
-            imgWidth: '70%',
+            imgHeight: '70%',
             zoomStep: 10
         }
     },
@@ -281,6 +281,7 @@ export default {
         imagePreviewListener() {
             // renderHtml img click
             this.$refs.renderHtml.addEventListener('click', e => {
+                this.imgHeight = '70%'
                 const event = e || window.event
                 const ele = event.srcElement || event.target
                 if (ele.tagName === 'IMG') {
@@ -298,14 +299,14 @@ export default {
             return false
         },
         zoomIn() {
-            let width = +this.imgWidth.split('%')[0]
+            let width = +this.imgHeight.split('%')[0]
             let result = width - this.zoomStep > 0 ? width - this.zoomStep : 0
-            this.imgWidth = `${result}%`
+            this.imgHeight = `${result}%`
         },
         zoomOut() {
-            let width = +this.imgWidth.split('%')[0]
+            let width = +this.imgHeight.split('%')[0]
             let result = width + this.zoomStep > 0 ? width + this.zoomStep : 0
-            this.imgWidth = `${result}%`
+            this.imgHeight = `${result}%`
         }
     },
     watch: {
