@@ -23,11 +23,14 @@ import container from 'markdown-it-container'
 // 目录
 import toc from 'markdown-it-toc'
 
+import attrs from 'markdown-it-attrs'
+
 import mdhl from '../plugins/markdown-it-highlight/'
 // math katex
 import katex from 'markdown-it-katex' // todos: dynamic import
 // local图片插件
 import miip from '../plugins/markdown-it-images'
+
 // todos: inject merge
 const plugins = {
     emoji: emoji,
@@ -43,7 +46,8 @@ const plugins = {
     toc: toc,
     mdhl: mdhl,
     katex: katex,
-    miip: miip
+    miip: miip,
+    attrs
 }
 
 const config = {
@@ -85,7 +89,8 @@ const installConfig = {
     toc: true,
     mdhl: true,
     katex: false,
-    miip: true
+    miip: true,
+    attrs: true
 }
 // a link target
 const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
@@ -93,10 +98,11 @@ const defaultRender = md.renderer.rules.link_open || function (tokens, idx, opti
 }
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
     const aIndex = tokens[idx].attrIndex('target')
+    console.log(tokens[idx])
     if (aIndex < 0) {
-        tokens[idx].attrPush(['target', '_blank'])
+        // tokens[idx].attrPush(['target', '_blank']) // keep default blank
     } else {
-        tokens[idx].attrs[aIndex][1] = '_blank'
+        // tokens[idx].attrs[aIndex][1] = '_blank' // keep attrs
     }
     return defaultRender(tokens, idx, options, env, self)
 }
