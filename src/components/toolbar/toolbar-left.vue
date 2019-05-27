@@ -78,7 +78,7 @@
                             来自网络
                         </li>
                         <li>
-                            <input type="file" accept="*" @change="e => addFileFromLocal(e)" multiple="multiple"/>本地上传
+                            <input type="file" accept="*" @change="e => addFileFromLocal(e)"/>本地上传
                         </li>
                     </ul>
                 </transition>
@@ -242,19 +242,21 @@ export default {
         },
         addImgFromLocal(e) {
             const files = e.target.files
+            const multiple = files.length > 1
             if (files.length > 0) {
                 [].forEach.call(files, (item, index) => {
-                    this.imgAddHandler(item, index)
+                    this.imgAddHandler(item, multiple)
                 })
             }
 
             e.target.value = '' // input初始化
         },
-        imgAddHandler(file, index) {
+        imgAddHandler(file, multiple) {
             this.imgIndex++
-            this.$emit('addImg', this.imgIndex, file)
+            this.$emit('addImg', this.imgIndex, file, multiple)
         },
         addFileFromLocal(e) {
+            // 文件上传目前支持单个
             const file = e.target.files[0]
             file && this.$emit('addFile', file)
         },

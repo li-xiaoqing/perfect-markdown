@@ -215,7 +215,7 @@ export default {
                 return this.$refs['renderHtml']
             }
         },
-        async addImg(index, file) {
+        async addImg(index, file, multiple) {
             const ret = await this.uploadImgFn(file)
             // width height
             let wh = {}
@@ -227,6 +227,7 @@ export default {
             }
             if (ret.upload) {
                 payload.url = ret.url
+                payload.multiple = multiple
                 insertContentAtCaret(this.getTextarea, 'image', payload, this)
             } else {
                 const reader = new FileReader()
