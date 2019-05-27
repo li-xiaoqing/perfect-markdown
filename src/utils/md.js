@@ -98,7 +98,6 @@ const defaultRender = md.renderer.rules.link_open || function (tokens, idx, opti
 }
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
     const aIndex = tokens[idx].attrIndex('target')
-    console.log(tokens[idx])
     if (aIndex < 0) {
         // tokens[idx].attrPush(['target', '_blank']) // keep default blank
     } else {

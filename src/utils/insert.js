@@ -103,6 +103,7 @@ function imageInsert(dom, payload, $vue) {
         let newStart = 0
         let newEnd = 0
         let imgContent = ''
+        let nameLength = 0
         if (payload.width || payload.height) {
             if (payload.width && payload.height) {
                 imgContent = `![${payload.name} =${payload.width}x${payload.height}](${payload.url})`
@@ -121,17 +122,48 @@ function imageInsert(dom, payload, $vue) {
             if (isLocal(payload.url)) {
                 newStart = newEnd = content.length
             } else {
-                newStart = start + 1 + 1 + payload.name.length + 1 + 1
+                if (payload.width) {
+                    nameLength += payload.width.toString().length
+                }
+
+                if (payload.height) {
+                    nameLength += payload.height.toString().length
+                }
+
+                if (nameLength > 1) {
+                    nameLength += 2 // = x 两个符号
+                }
+                newStart = start + 1 + 1 + payload.name.length + 1 + nameLength + 1 + 1
                 newEnd = newStart + `${payload.url}`.length
             }
         } else { // selected
             // select insert, ignore the input url
-            content = content.substring(0, start) + imgContent + content.substring(end, content.length)
+            if (payload.multiple) {
+                content = content.substring(0, content.length) + '\n' + imgContent
+            } else {
+                content = content.substring(0, start) + imgContent + content.substring(end, content.length)
+            }
+
             if (isLocal(payload.url)) {
                 newStart = newEnd = content.length
             } else {
-                newStart = start - 1 + 2 + payload.name.length + 2
-                newEnd = newStart + end - start
+                if (payload.multiple) {
+                    newStart = newEnd = content.length
+                } else {
+                    if (payload.width) {
+                        nameLength += payload.width.toString().length
+                    }
+
+                    if (payload.height) {
+                        nameLength += payload.height.toString().length
+                    }
+
+                    if (nameLength > 1) {
+                        nameLength += 2 // = x 两个符号
+                    }
+                    newStart = start + 2 + payload.name.length + 1 + nameLength + 2
+                    newEnd = newStart + `${payload.url}`.length
+                }
             }
         }
 
