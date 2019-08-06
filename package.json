@@ -37,6 +37,7 @@
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "markdown-it-toc": "^1.1.0",
+    "v-tooltip": "^2.0.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

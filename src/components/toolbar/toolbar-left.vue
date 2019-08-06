@@ -4,9 +4,9 @@
         </template>
         <template v-else>
             <slot name="toolbarLeftBefore"></slot>
-            <span @click="clickHandler('bold', 'insert')"><i class="iconfont icon-bold"></i></span>
-            <span @click="clickHandler('italic', 'insert')"><i class="iconfont icon-italic"></i></span>
-            <span class="menu" @click="clickHandler('title', 'menu')"  @mouseenter="showTitleMenu" @mouseleave="hideTitleMenu">
+            <span v-tooltip.top-center="'加粗'" @click="clickHandler('bold', 'insert')"><i class="iconfont icon-bold"></i></span>
+            <span v-tooltip.top-center="'斜体'" @click="clickHandler('italic', 'insert')"><i class="iconfont icon-italic"></i></span>
+            <span class="menu" v-tooltip.top-center="'标题'" @click="clickHandler('title', 'menu')"  @mouseenter="showTitleMenu" @mouseleave="hideTitleMenu">
                 <i class="iconfont icon-title"></i>
                 <transition name="fade">
                     <ul
@@ -33,21 +33,21 @@
                     </ul>
                 </transition>
             </span>
-            <span @click="clickHandler('underline', 'insert')"><i class="iconfont icon-underline"></i></span>
-            <span @click="clickHandler('throughline', 'insert')"><i class="iconfont icon-strike"></i></span>
-            <span @click="clickHandler('mark', 'insert')"><i class="iconfont icon-mark"></i></span>
-            <span @click="clickHandler('sub', 'insert')"><i class="iconfont icon-sub"></i></span>
-            <span @click="clickHandler('sup', 'insert')"><i class="iconfont icon-sup"></i></span>
-            <span @click="clickHandler('left', 'insert')"><i class="iconfont icon-left"></i></span>
-            <span @click="clickHandler('center', 'insert')"><i class="iconfont icon-center"></i></span>
-            <span @click="clickHandler('right', 'insert')"><i class="iconfont icon-right"></i></span>
-            <span @click="clickHandler('quotation', 'insert')"><i class="iconfont icon-quotation"></i></span>
-            <span @click="clickHandler('ul', 'insert')"><i class="iconfont icon-ul"></i></span>
-            <span @click="clickHandler('ol', 'insert')"><i class="iconfont icon-ol"></i></span>
-            <span @click="clickHandler('code', 'insert')"><i class="iconfont icon-code"></i></span>
-            <span @click="clickHandler('table', 'insert')"><i class="iconfont icon-table"></i></span>
-            <span @click="clickHandler('link', 'pop')"><i class="iconfont icon-link"></i></span>
-            <span class="menu" @click="clickHandler('image', 'menu')" @mouseenter="showImageMenu" @mouseleave="hideImageMenu">
+            <span v-tooltip.top-center="'下划线'" @click="clickHandler('underline', 'insert')"><i class="iconfont icon-underline"></i></span>
+            <span v-tooltip.top-center="'删除线'" @click="clickHandler('throughline', 'insert')"><i class="iconfont icon-strike"></i></span>
+            <span v-tooltip.top-center="'标记'" @click="clickHandler('mark', 'insert')"><i class="iconfont icon-mark"></i></span>
+            <span v-tooltip.top-center="'下标'" @click="clickHandler('sub', 'insert')"><i class="iconfont icon-sub"></i></span>
+            <span v-tooltip.top-center="'上标'" @click="clickHandler('sup', 'insert')"><i class="iconfont icon-sup"></i></span>
+            <span v-tooltip.top-center="'左对齐'" @click="clickHandler('left', 'insert')"><i class="iconfont icon-left"></i></span>
+            <span v-tooltip.top-center="'居中'" @click="clickHandler('center', 'insert')"><i class="iconfont icon-center"></i></span>
+            <span v-tooltip.top-center="'右对齐'" @click="clickHandler('right', 'insert')"><i class="iconfont icon-right"></i></span>
+            <span v-tooltip.top-center="'引用'" @click="clickHandler('quotation', 'insert')"><i class="iconfont icon-quotation"></i></span>
+            <span v-tooltip.top-center="'无序列表'" @click="clickHandler('ul', 'insert')"><i class="iconfont icon-ul"></i></span>
+            <span v-tooltip.top-center="'有序列表'" @click="clickHandler('ol', 'insert')"><i class="iconfont icon-ol"></i></span>
+            <span v-tooltip.top-center="'代码块'" @click="clickHandler('code', 'insert')"><i class="iconfont icon-code"></i></span>
+            <span v-tooltip.top-center="'表格'" @click="clickHandler('table', 'insert')"><i class="iconfont icon-table"></i></span>
+            <span v-tooltip.top-center="'链接'" @click="clickHandler('link', 'pop')"><i class="iconfont icon-link"></i></span>
+            <span v-tooltip.top-center="'图片'" class="menu" @click="clickHandler('image', 'menu')" @mouseenter="showImageMenu" @mouseleave="hideImageMenu">
                 <i class="iconfont icon-image"></i>
                 <transition name="fade">
                     <ul
@@ -65,7 +65,7 @@
                     </ul>
                 </transition>
             </span>
-            <span @click="clickHandler('file', 'menu')" @mouseenter="showFileMenu" @mouseleave="hideFileMenu">
+            <span v-tooltip.top-center="'附件'" @click="clickHandler('file', 'menu')" @mouseenter="showFileMenu" @mouseleave="hideFileMenu">
                 <i class="iconfont icon-attachment"></i>
                 <transition name="fade">
                     <ul
@@ -83,7 +83,7 @@
                     </ul>
                 </transition>
             </span>
-            <span @click="clickHandler('clear', 'clear')">
+            <span v-tooltip.top-center="'清空'" @click="clickHandler('clear', 'clear')">
                 <i class="iconfont icon-trash"></i>
             </span>
             <slot name="toolbarLeftAfter"></slot>
