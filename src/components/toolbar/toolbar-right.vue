@@ -4,21 +4,21 @@
         </template>
         <template v-else>
             <slot name="toolbarRightBefore"></slot>
-            <span @click="clickHandler('split')" :class="[iconActive.split? 'selected' : '']">
+            <span @click="clickHandler('split')" v-tooltip.top-center="'分屏切换'" :class="[iconActive.split? 'selected' : '']">
                 <i class="iconfont icon-split" ></i>
             </span>
-            <span @click="clickHandler('fullscreen')">
+            <span @click="clickHandler('fullscreen')" v-tooltip.top-center="'全屏切换'">
                 <i :class="[iconActive.fullscreen? 'icon-exit': 'icon-expand', 'iconfont' ]"></i>
             </span>
-            <span class="import">
+            <span class="import" v-tooltip.top-center="'导入md'">
                 <i class="iconfont icon-import"></i>
                 <input type="file" accept="text/markdown" @change="e => addMDFromLocal(e)">
             </span>
-            <span class="export" @click="exportMd">
+            <span class="export" @click="exportMd" v-tooltip.top-center="'导出md'">
                 <i class="iconfont icon-export"></i>
             </span>
-            <span @click="print"><i class="iconfont icon-print"></i></span>
-            <span @click="help"><i class="iconfont icon-help"></i></span>
+            <span @click="print" v-tooltip.top-center="'打印'"><i class="iconfont icon-print"></i></span>
+            <span @click="help"  v-tooltip.top-center="'帮助'"><i class="iconfont icon-help"></i></span>
             <slot name="toolbarRightAfter"></slot>
 
             <div

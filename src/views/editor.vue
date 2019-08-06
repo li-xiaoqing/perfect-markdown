@@ -72,9 +72,7 @@
     </div>
 </template>
 <script>
-import '../assets/less/reset.less'
-import '../assets/less/github-markdown.css' // fork github-markdown
-import '../assets/fonts/iconfont.css'
+
 import ToolbarLeft from '../components/toolbar/toolbar-left'
 import ToolbarRight from '../components/toolbar/toolbar-right'
 import AutoTextarea from '../components/auto-textarea'
