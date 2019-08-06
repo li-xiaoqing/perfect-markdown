@@ -83,6 +83,13 @@ import loader from '../utils/loader'
 import external from '../config/external'
 import md from '../utils/md'
 import { scrollLink } from '../utils/scroll'
+// 注册指令和组件
+import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
+import Vue from 'vue'
+Vue.directive('tooltip', VTooltip)
+Vue.directive('close-popover', VClosePopover)
+Vue.component('v-popover', VPopover)
+
 export default {
     name: 'editor',
     data() {
