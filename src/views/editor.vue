@@ -72,7 +72,10 @@
     </div>
 </template>
 <script>
-
+import '../assets/fonts/iconfont.css'
+import '../assets/less/reset.less'
+import '../assets/less/tooltip.less'
+import '../assets/less/github-markdown.css'
 import ToolbarLeft from '../components/toolbar/toolbar-left'
 import ToolbarRight from '../components/toolbar/toolbar-right'
 import AutoTextarea from '../components/auto-textarea'
