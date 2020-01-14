@@ -282,9 +282,11 @@ export default {
                 // todos: split transform the code latex => mathajx
                 result = val.replace(/\${1,2}[\s\S]*(\\\\)[\s\S]*\${1,2}/g, (match) => {
                     return match.replace(/\\\\/g, `\\cr`)
-                }).replace(/\${1,2}[\s\S]*_[\s\S]*\${1,2}/g, (match) => { // em conflict
-                    return match.replace(/_/g, `\\_`) // bow to markdown
                 })
+
+                /* .replace(/\${1,2}[\s\S]*_[\s\S]*\${1,2}/g, (match) => { // em conflict
+                    return match.replace(/_/g, `\\_`) // bow to markdown
+                }) */
             }
             return md.render(result)
         },
