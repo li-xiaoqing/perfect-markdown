@@ -1,6 +1,6 @@
 {
   "name": "perfect-markdown",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "main": "src/index.js",
   "files": [
     "lib",
