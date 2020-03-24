@@ -7,6 +7,7 @@
             <toolbar-left
                 class="left"
                 @addImg="addImg"
+                @addVideo="addVideo"
                 @addFile="addFile"
                 :dom="getTextarea"
                 :customLeftToolbar="customLeftToolbar"
@@ -72,7 +73,10 @@
     </div>
 </template>
 <script>
-
+import '../assets/fonts/iconfont.css'
+import '../assets/less/reset.less'
+import '../assets/less/tooltip.less'
+import '../assets/less/github-markdown.css'
 import ToolbarLeft from '../components/toolbar/toolbar-left'
 import ToolbarRight from '../components/toolbar/toolbar-right'
 import AutoTextarea from '../components/auto-textarea'
@@ -83,6 +87,13 @@ import loader from '../utils/loader'
 import external from '../config/external'
 import md from '../utils/md'
 import { scrollLink } from '../utils/scroll'
+// 注册指令和组件
+import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
+import Vue from 'vue'
+Vue.directive('tooltip', VTooltip)
+Vue.directive('close-popover', VClosePopover)
+Vue.component('v-popover', VPopover)
+
 export default {
     name: 'editor',
     data() {
@@ -238,6 +249,24 @@ export default {
                 file && reader.readAsDataURL(file)
             }
         },
+        async addVideo(file, multiple) {
+            const ret = await this.uploadImgFn(file)
+            // width height
+            let payload = { name: file.name }
+            if (ret.upload) {
+                payload.url = ret.url
+                payload.multiple = multiple
+                insertContentAtCaret(this.getTextarea, 'video', payload, this)
+            } else {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    payload.url = e.target.result // 本地base64
+                    insertContentAtCaret(this.getTextarea, 'video', payload, this)
+                }
+
+                file && reader.readAsDataURL(file)
+            }
+        },
         async getWH(file) {
             return new Promise((resolve, reject) => {
                 const image = new Image()
@@ -272,9 +301,11 @@ export default {
                 // todos: split transform the code latex => mathajx
                 result = val.replace(/\${1,2}[\s\S]*(\\\\)[\s\S]*\${1,2}/g, (match) => {
                     return match.replace(/\\\\/g, `\\cr`)
-                }).replace(/\${1,2}[\s\S]*_[\s\S]*\${1,2}/g, (match) => { // em conflict
-                    return match.replace(/_/g, `\\_`) // bow to markdown
                 })
+
+                /* .replace(/\${1,2}[\s\S]*_[\s\S]*\${1,2}/g, (match) => { // em conflict
+                    return match.replace(/_/g, `\\_`) // bow to markdown
+                }) */
             }
             return md.render(result)
         },

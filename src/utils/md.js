@@ -31,6 +31,8 @@ import katex from 'markdown-it-katex' // todos: dynamic import
 // local图片插件
 import miip from '../plugins/markdown-it-images'
 
+import video from '../plugins/markdown-it-video'
+
 // todos: inject merge
 const plugins = {
     emoji: emoji,
@@ -47,7 +49,8 @@ const plugins = {
     mdhl: mdhl,
     katex: katex,
     miip: miip,
-    attrs
+    attrs,
+    video
 }
 
 const config = {
@@ -90,7 +93,8 @@ const installConfig = {
     mdhl: true,
     katex: false,
     miip: true,
-    attrs: true
+    attrs: true,
+    video: true
 }
 // a link target
 const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
