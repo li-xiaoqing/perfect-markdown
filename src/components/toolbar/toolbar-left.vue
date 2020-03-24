@@ -65,6 +65,24 @@
                     </ul>
                 </transition>
             </span>
+            <span v-tooltip.top-center="'视频'" class="menu" @click="clickHandler('vide', 'menu')" @mouseenter="showVideoMenu" @mouseleave="hideVideoMenu">
+                <i class="iconfont icon-video"></i>
+                <transition name="fade">
+                    <ul
+                        v-show="videoMenuShow"
+                        :class="['icon-menu']"
+                        @mouseenter="showVideoMenu"
+                        @mouseleave="hideVideoMenu"
+                    >
+                        <li @click="addVideFromLink">
+                            来自网络
+                        </li>
+                        <li>
+                            <input type="file"  accept="video/mp4,audio/mp4" @change="e => addVideoFromLocal(e)"/>本地上传
+                        </li>
+                    </ul>
+                </transition>
+            </span>
             <span v-tooltip.top-center="'附件'" @click="clickHandler('file', 'menu')" @mouseenter="showFileMenu" @mouseleave="hideFileMenu">
                 <i class="iconfont icon-attachment"></i>
                 <transition name="fade">
@@ -98,6 +116,17 @@
                     <div class="btn-box">
                         <div @click="closePop('imagePopShow')">取消</div>
                         <div class="confirm"  @click="clickHandler('image', 'insert')">确定</div>
+                    </div>
+                </div>
+            </div>
+            <div v-show="videoPopShow" class="video-pop">
+                <div class="dialog">
+                    <div class="input-box">
+                        <input placeholder="视频链接" v-model="videoUrl" type="text">
+                    </div>
+                    <div class="btn-box">
+                        <div @click="closePop('videoPopShow')">取消</div>
+                        <div class="confirm"  @click="clickHandler('video', 'insert')">确定</div>
                     </div>
                 </div>
             </div>
@@ -140,20 +169,23 @@ export default {
     data() {
         return {
             imageMenuShow: false,
+            videoMenuShow: false,
             fileMenuShow: false,
             titleMenuShow: false,
             menuShowTimer: null,
+            videoShowTimer: null,
             linkPopShow: false,
             imagePopShow: false,
+            videoPopShow: false,
             filePopShow: false,
             fileName: '【附件】',
             fileUrl: '',
             imageName: '',
             imageUrl: '',
+            videoUrl: '',
             linkName: '',
             linkUrl: '',
             imgIndex: 0
-
         }
     },
     props: {
@@ -198,6 +230,8 @@ export default {
                 payload = { name: this.fileName, url: this.fileUrl }
             } else if (icon === 'link') {
                 payload = { name: this.linkName, url: this.linkUrl }
+            } else if (icon === 'video') {
+                payload = { url: this.videoUrl }
             } else {
                 // default
             }
@@ -214,6 +248,15 @@ export default {
         hideImageMenu() {
             this.menuShowTimer = setTimeout(() => {
                 this.imageMenuShow = false
+            }, 100)
+        },
+        showVideoMenu() {
+            clearTimeout(this.videoShowTimer)
+            this.videoMenuShow = true
+        },
+        hideVideoMenu() {
+            this.videoShowTimer = setTimeout(() => {
+                this.videoMenuShow = false
             }, 100)
         },
         showFileMenu() {
@@ -237,6 +280,9 @@ export default {
         addImgFromLink() {
             this.imagePopShow = true
         },
+        addVideFromLink() {
+            this.videoPopShow = true
+        },
         addFileFromLink() {
             this.filePopShow = true
         },
@@ -251,9 +297,23 @@ export default {
 
             e.target.value = '' // input初始化
         },
+        addVideoFromLocal(e) {
+            const files = e.target.files
+            console.log(files)
+            if (files.length > 0) {
+                [].forEach.call(files, (item, index) => {
+                    this.videoAddHandler(item)
+                })
+            }
+
+            e.target.value = '' // input初始化
+        },
         imgAddHandler(file, multiple) {
             this.imgIndex++
             this.$emit('addImg', this.imgIndex, file, multiple)
+        },
+        videoAddHandler(file, multiple) {
+            this.$emit('addVideo', file, multiple)
         },
         addFileFromLocal(e) {
             // 文件上传目前支持单个
@@ -324,6 +384,7 @@ export default {
         }
     }
     .image-pop,
+    .video-pop,
     .link-pop,
     .file-pop {
         position: fixed;

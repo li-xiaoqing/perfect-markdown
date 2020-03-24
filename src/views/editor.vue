@@ -7,6 +7,7 @@
             <toolbar-left
                 class="left"
                 @addImg="addImg"
+                @addVideo="addVideo"
                 @addFile="addFile"
                 :dom="getTextarea"
                 :customLeftToolbar="customLeftToolbar"
@@ -243,6 +244,24 @@ export default {
                     md.imageAdd(index, e.target.result) // plugin
                     payload.url = index
                     insertContentAtCaret(this.getTextarea, 'image', payload, this)
+                }
+
+                file && reader.readAsDataURL(file)
+            }
+        },
+        async addVideo(file, multiple) {
+            const ret = await this.uploadImgFn(file)
+            // width height
+            let payload = { name: file.name }
+            if (ret.upload) {
+                payload.url = ret.url
+                payload.multiple = multiple
+                insertContentAtCaret(this.getTextarea, 'video', payload, this)
+            } else {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    payload.url = e.target.result // 本地base64
+                    insertContentAtCaret(this.getTextarea, 'video', payload, this)
                 }
 
                 file && reader.readAsDataURL(file)
