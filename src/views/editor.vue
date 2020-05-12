@@ -31,6 +31,7 @@
                 v-show="showTextarea"
                 :class="[editorIsSplit? 'split': 'one', 'markdown-input']"
                 @scroll="editOnScroll"
+                @click="textareaFocus"
                 ref="inputEdit"
             >
                 <auto-textarea ref="autoTextarea" v-model="localValue"></auto-textarea>
@@ -293,9 +294,11 @@ export default {
             if (this.plugins.mathjax) {
                 setTimeout(() => {
                     // todos: split MathJax render
-                    window.MathJax && window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, document.getElementsByClassName('copy-html'), () => {
-                        const copy = document.getElementsByClassName('copy-html')[0].innerHTML
-                        document.getElementsByClassName('markdown-render')[0].innerHTML = copy
+                    const copyDom = document.getElementsByClassName('copy-html')
+                    const renderDom = document.getElementsByClassName('markdown-render')
+                    window.MathJax && window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, copyDom, () => {
+                        const copy = copyDom[0] && copyDom[0].innerHTML
+                        renderDom[0] && (renderDom[0].innerHTML = copy)
                     }])
                 }, 200)
                 // todos: split transform the code latex => mathajx
@@ -341,6 +344,9 @@ export default {
         },
         editOnScroll(e) {
             scrollLink(e, this)
+        },
+        textareaFocus() {
+            this.$refs['autoTextarea'].$refs['textarea'].focus()
         }
     },
     watch: {
