@@ -46,6 +46,22 @@ $ npm install perfect-markdown --save
     }
 ```
 
+## i18n
+we support i18n and integrated Chinese Simplified(zh-CN) and English(en)，default Chinese Simplified.
+
+```javascript
+    import Vue from 'vue'
+    import store from '@/store' // vuex is required in perfect-markdown
+    import pmd from 'perfect-markdown'
+    // use
+    Vue.use(pmd, { store }) // register pmd vuex module
+    consoloe.log(pmd)
+    pmd.setI18nLocale('en') // set locale english
+    // also we can add new language package through the following methods
+    // pmd.setLangMessages(lang, messages) // set lang and translation
+    // pmd.setHelp(lang, helpMd) // set lang and help doc, the doc is a markdown file
+
+```
 
 ## API
 

@@ -50,7 +50,7 @@
                     <div class="img-box" >
                         <img
                             :src="imgPreviewSrc"
-                            alt="预览"
+                            :alt="$t('toolbar.editor.preview')"
                             :style="{
                                 height: `${imgHeight}`
                             }"/>
@@ -91,10 +91,10 @@ import { scrollLink } from '../utils/scroll'
 // 注册指令和组件
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 import Vue from 'vue'
+import { i18n } from '../setup/i18n-setup'
 Vue.directive('tooltip', VTooltip)
 Vue.directive('close-popover', VClosePopover)
 Vue.component('v-popover', VPopover)
-
 export default {
     name: 'editor',
     data() {
@@ -166,6 +166,7 @@ export default {
         ToolbarRight,
         AutoTextarea
     },
+    i18n,
     mounted() {
         this.showToolbar && keyboardListener(this.getTextarea(), this)
         this.imagePreviewListener()
