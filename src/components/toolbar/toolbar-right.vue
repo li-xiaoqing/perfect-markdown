@@ -4,21 +4,21 @@
         </template>
         <template v-else>
             <slot name="toolbarRightBefore"></slot>
-            <span @click="clickHandler('split')" v-tooltip.top-center="'分屏切换'" :class="[iconActive.split? 'selected' : '']">
+            <span @click="clickHandler('split')" v-tooltip.top-center="$t('toolbar.right.split')" :class="[iconActive.split? 'selected' : '']">
                 <i class="iconfont icon-split" ></i>
             </span>
-            <span @click="clickHandler('fullscreen')" v-tooltip.top-center="'全屏切换'">
+            <span @click="clickHandler('fullscreen')" v-tooltip.top-center="$t('toolbar.right.fullscreen')">
                 <i :class="[iconActive.fullscreen? 'icon-exit': 'icon-expand', 'iconfont' ]"></i>
             </span>
-            <span class="import" v-tooltip.top-center="'导入md'">
+            <span class="import" v-tooltip.top-center="$t('toolbar.right.import')">
                 <i class="iconfont icon-import"></i>
                 <input type="file" accept="text/markdown" @change="e => addMDFromLocal(e)">
             </span>
-            <span class="export" @click="exportMd" v-tooltip.top-center="'导出md'">
+            <span class="export" @click="exportMd" v-tooltip.top-center="$t('toolbar.right.export')">
                 <i class="iconfont icon-export"></i>
             </span>
-            <span @click="print" v-tooltip.top-center="'打印'"><i class="iconfont icon-print"></i></span>
-            <span @click="help"  v-tooltip.top-center="'帮助'"><i class="iconfont icon-help"></i></span>
+            <span @click="print" v-tooltip.top-center="$t('toolbar.right.print')"><i class="iconfont icon-print"></i></span>
+            <span @click="help"  v-tooltip.top-center="$t('toolbar.right.help')"><i class="iconfont icon-help"></i></span>
             <slot name="toolbarRightAfter"></slot>
 
             <div
@@ -34,7 +34,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import md from '../../utils/md'
-import help from '../../config/help'
+import help from '../../lang/help'
 export default {
     data() {
         return {
@@ -58,9 +58,6 @@ export default {
             type: Boolean,
             default: false
         }
-    },
-    created() {
-        this.helpMD = md.render(help['zh-CN'])
     },
     computed: {
         ...mapGetters({ currentMD: 'markdownBody/getTextareaContent' })
@@ -94,7 +91,7 @@ export default {
             const md = this.currentMD
             let downloadLink = document.createElement('a')
             downloadLink.setAttribute('href', 'data:text/plain;charset=UTF-8,' + encodeURIComponent(md))
-            downloadLink.setAttribute('download', '未命名.md')
+            downloadLink.setAttribute('download', this.$t('toolbar.right.downloadFileName'))
             downloadLink.style.display = 'none'
             if (document.createEvent) {
                 var event = document.createEvent('MouseEvents')
@@ -116,6 +113,14 @@ export default {
         },
         help() {
             this.helpDocShow = !this.helpDocShow
+        }
+    },
+    watch: {
+        '$i18n.locale': {
+            immediate: true,
+            handler(val) {
+                this.helpMD = md.render(help[val || 'en'] )
+            }
         }
     }
 }

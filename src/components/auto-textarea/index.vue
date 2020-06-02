@@ -14,7 +14,8 @@
 export default {
     data() {
         return {
-            inputStr: this.value
+            inputStr: this.value,
+            placeholder: this.$t('autoTextarea.placeholder')
         }
     },
     props: {
@@ -25,10 +26,6 @@ export default {
         value: {
             type: String,
             default: ''
-        },
-        placeholder: {
-            type: String,
-            default: '请输入'
         }
     },
     methods: {

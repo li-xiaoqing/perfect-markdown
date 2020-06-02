@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import pmd from './editor'
+import pmd from '../index'
 export default {
     data() {
         return {
@@ -25,8 +25,8 @@ export default {
             value: '# demo'
         }
     },
-    components: {
-        pmd
+    created() {
+        window.Vue.use(pmd)
     },
     methods: {
         fileUplod(file) {
