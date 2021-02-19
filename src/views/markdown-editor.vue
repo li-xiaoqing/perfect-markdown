@@ -1,10 +1,11 @@
 <template>
-    <div class="editor-box">
+    <div class="editor-demo">
         <h1>{{title}}</h1>
         <div
             class="pmd-editor"
         >
             <pmd
+                class="editor-box"
                 :showTextarea="true"
                 :showToolbar="true"
                 v-model="value"
@@ -16,7 +17,7 @@
     </div>
 </template>
 <script>
-import pmd from './editor'
+import pmd from '../index'
 export default {
     data() {
         return {
@@ -24,8 +25,8 @@ export default {
             value: '# demo'
         }
     },
-    components: {
-        pmd
+    created() {
+        window.Vue.use(pmd)
     },
     methods: {
         fileUplod(file) {
@@ -44,5 +45,8 @@ export default {
 .pmd-editor {
     width: 75%;
     margin: 0 auto;
+    .editor-box {
+        height: 500px;
+    }
 }
 </style>

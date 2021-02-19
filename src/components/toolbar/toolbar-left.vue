@@ -4,9 +4,9 @@
         </template>
         <template v-else>
             <slot name="toolbarLeftBefore"></slot>
-            <span @click="clickHandler('bold', 'insert')"><i class="iconfont icon-bold"></i></span>
-            <span @click="clickHandler('italic', 'insert')"><i class="iconfont icon-italic"></i></span>
-            <span class="menu" @click="clickHandler('title', 'menu')"  @mouseenter="showTitleMenu" @mouseleave="hideTitleMenu">
+            <span v-tooltip.top-center="$t('toolbar.left.bold')" @click="clickHandler('bold', 'insert')"><i class="iconfont icon-bold"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.italic')" @click="clickHandler('italic', 'insert')"><i class="iconfont icon-italic"></i></span>
+            <span class="menu" v-tooltip.top-center="$t('toolbar.left.title')" @click="clickHandler('title', 'menu')"  @mouseenter="showTitleMenu" @mouseleave="hideTitleMenu">
                 <i class="iconfont icon-title"></i>
                 <transition name="fade">
                     <ul
@@ -16,38 +16,38 @@
                         @mouseleave="hideTitleMenu"
                     >
                         <li @click="clickHandler('title1', 'insert')">
-                            一级标题
+                            {{$t('toolbar.left.h1')}}
                         </li>
                         <li @click="clickHandler('title2', 'insert')">
-                            二级标题
+                            {{$t('toolbar.left.h2')}}
                         </li>
                         <li @click="clickHandler('title3', 'insert')">
-                            三级标题
+                            {{$t('toolbar.left.h3')}}
                         </li>
                         <li @click="clickHandler('title4', 'insert')">
-                            四级标题
+                            {{$t('toolbar.left.h4')}}
                         </li>
                         <li @click="clickHandler('title5', 'insert')">
-                            五级标题
+                            {{$t('toolbar.left.h5')}}
                         </li>
                     </ul>
                 </transition>
             </span>
-            <span @click="clickHandler('underline', 'insert')"><i class="iconfont icon-underline"></i></span>
-            <span @click="clickHandler('throughline', 'insert')"><i class="iconfont icon-strike"></i></span>
-            <span @click="clickHandler('mark', 'insert')"><i class="iconfont icon-mark"></i></span>
-            <span @click="clickHandler('sub', 'insert')"><i class="iconfont icon-sub"></i></span>
-            <span @click="clickHandler('sup', 'insert')"><i class="iconfont icon-sup"></i></span>
-            <span @click="clickHandler('left', 'insert')"><i class="iconfont icon-left"></i></span>
-            <span @click="clickHandler('center', 'insert')"><i class="iconfont icon-center"></i></span>
-            <span @click="clickHandler('right', 'insert')"><i class="iconfont icon-right"></i></span>
-            <span @click="clickHandler('quotation', 'insert')"><i class="iconfont icon-quotation"></i></span>
-            <span @click="clickHandler('ul', 'insert')"><i class="iconfont icon-ul"></i></span>
-            <span @click="clickHandler('ol', 'insert')"><i class="iconfont icon-ol"></i></span>
-            <span @click="clickHandler('code', 'insert')"><i class="iconfont icon-code"></i></span>
-            <span @click="clickHandler('table', 'insert')"><i class="iconfont icon-table"></i></span>
-            <span @click="clickHandler('link', 'pop')"><i class="iconfont icon-link"></i></span>
-            <span class="menu" @click="clickHandler('image', 'menu')" @mouseenter="showImageMenu" @mouseleave="hideImageMenu">
+            <span v-tooltip.top-center="$t('toolbar.left.underline')" @click="clickHandler('underline', 'insert')"><i class="iconfont icon-underline"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.throughline')" @click="clickHandler('throughline', 'insert')"><i class="iconfont icon-strike"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.mark')" @click="clickHandler('mark', 'insert')"><i class="iconfont icon-mark"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.sub')" @click="clickHandler('sub', 'insert')"><i class="iconfont icon-sub"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.sup')" @click="clickHandler('sup', 'insert')"><i class="iconfont icon-sup"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.left')" @click="clickHandler('left', 'insert')"><i class="iconfont icon-left"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.center')" @click="clickHandler('center', 'insert')"><i class="iconfont icon-center"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.right')" @click="clickHandler('right', 'insert')"><i class="iconfont icon-right"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.quotation')" @click="clickHandler('quotation', 'insert')"><i class="iconfont icon-quotation"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.ul')" @click="clickHandler('ul', 'insert')"><i class="iconfont icon-ul"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.ol')" @click="clickHandler('ol', 'insert')"><i class="iconfont icon-ol"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.code')" @click="clickHandler('code', 'insert')"><i class="iconfont icon-code"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.table')" @click="clickHandler('table', 'insert')"><i class="iconfont icon-table"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.link')" @click="clickHandler('link', 'pop')"><i class="iconfont icon-link"></i></span>
+            <span v-tooltip.top-center="$t('toolbar.left.image')" class="menu" @click="clickHandler('image', 'menu')" @mouseenter="showImageMenu" @mouseleave="hideImageMenu">
                 <i class="iconfont icon-image"></i>
                 <transition name="fade">
                     <ul
@@ -57,15 +57,33 @@
                         @mouseleave="hideImageMenu"
                     >
                         <li @click="addImgFromLink">
-                            来自网络
+                            {{$t('toolbar.left.fromNetwork')}}
                         </li>
                         <li>
-                            <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" @change="e => addImgFromLocal(e)" multiple="multiple"/>本地上传
+                            <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" @change="e => addImgFromLocal(e)" multiple="multiple"/> {{$t('toolbar.left.fromLocal')}}
                         </li>
                     </ul>
                 </transition>
             </span>
-            <span @click="clickHandler('file', 'menu')" @mouseenter="showFileMenu" @mouseleave="hideFileMenu">
+            <span v-tooltip.top-center="$t('toolbar.left.video')" class="menu" @click="clickHandler('video', 'menu')" @mouseenter="showVideoMenu" @mouseleave="hideVideoMenu">
+                <i class="iconfont icon-video"></i>
+                <transition name="fade">
+                    <ul
+                        v-show="videoMenuShow"
+                        :class="['icon-menu']"
+                        @mouseenter="showVideoMenu"
+                        @mouseleave="hideVideoMenu"
+                    >
+                        <li @click="addVideFromLink">
+                            {{$t('toolbar.left.fromNetwork')}}
+                        </li>
+                        <li>
+                            <input type="file"  accept="video/mp4,audio/mp4" @change="e => addVideoFromLocal(e)"/> {{$t('toolbar.left.fromLocal')}}
+                        </li>
+                    </ul>
+                </transition>
+            </span>
+            <span v-tooltip.top-center="$t('toolbar.left.attachment')" @click="clickHandler('file', 'menu')" @mouseenter="showFileMenu" @mouseleave="hideFileMenu">
                 <i class="iconfont icon-attachment"></i>
                 <transition name="fade">
                     <ul
@@ -75,57 +93,68 @@
                         @mouseleave="hideFileMenu"
                     >
                         <li @click="addFileFromLink">
-                            来自网络
+                            {{$t('toolbar.left.fromNetwork')}}
                         </li>
                         <li>
-                            <input type="file" accept="*" @change="e => addFileFromLocal(e)" multiple="multiple"/>本地上传
+                            <input type="file" accept="*" @change="e => addFileFromLocal(e)"/>{{$t('toolbar.left.fromLocal')}}
                         </li>
                     </ul>
                 </transition>
             </span>
-            <span @click="clickHandler('clear', 'clear')">
+            <span v-tooltip.top-center="$t('toolbar.left.clear')" @click="clickHandler('clear', 'clear')">
                 <i class="iconfont icon-trash"></i>
             </span>
             <slot name="toolbarLeftAfter"></slot>
             <div v-show="imagePopShow" class="image-pop">
                 <div class="dialog">
                     <div class="input-box">
-                        <input placeholder="图片名称" v-model="imageName" type="text">
+                        <input :placeholder="$t('toolbar.left.imageName')" v-model="imageName" type="text">
                     </div>
                     <div class="input-box">
-                        <input placeholder="图片链接" v-model="imageUrl" type="text">
+                        <input :placeholder="$t('toolbar.left.imageLink')" v-model="imageUrl" type="text">
                     </div>
                     <div class="btn-box">
-                        <div @click="closePop('imagePopShow')">取消</div>
-                        <div class="confirm"  @click="clickHandler('image', 'insert')">确定</div>
+                        <div @click="closePop('imagePopShow')">{{$t('toolbar.left.cancel')}}</div>
+                        <div class="confirm"  @click="clickHandler('image', 'insert')">{{$t('toolbar.left.confirm')}}</div>
+                    </div>
+                </div>
+            </div>
+            <div v-show="videoPopShow" class="video-pop">
+                <div class="dialog">
+                    <div class="input-box">
+                        <input :placeholder="$t('toolbar.left.videoLink')" v-model="videoUrl" type="text">
+                    </div>
+                    <div class="btn-box">
+                        <div @click="closePop('videoPopShow')">{{$t('toolbar.left.cancel')}}</div>
+                        <div class="confirm"  @click="clickHandler('video', 'insert')">{{$t('toolbar.left.confirm')}}</div>
                     </div>
                 </div>
             </div>
             <div v-show="linkPopShow" class="link-pop">
                 <div class="dialog">
                     <div class="input-box">
-                        <input placeholder="链接名称" v-model="linkName" type="text">
+                        <input :placeholder="$t('toolbar.left.linkName')" v-model="linkName" type="text">
                     </div>
                     <div class="input-box">
-                        <input placeholder="链接" v-model="linkUrl" type="text">
+                        <input :placeholder="$t('toolbar.left.link')" v-model="linkUrl" type="text">
                     </div>
                     <div class="btn-box">
-                        <div @click="closePop('linkPopShow')">取消</div>
-                        <div class="confirm" @click="clickHandler('link', 'insert')">确定</div>
+                        <div @click="closePop('linkPopShow')">{{$t('toolbar.left.cancel')}}</div>
+                        <div class="confirm" @click="clickHandler('link', 'insert')">{{$t('toolbar.left.confirm')}}</div>
                     </div>
                 </div>
             </div>
             <div v-show="filePopShow" class="file-pop">
                 <div class="dialog">
                     <div class="input-box">
-                        <input v-model="fileName" placeholder="附件名称" type="text">
+                        <input v-model="fileName" :placeholder="$t('toolbar.left.attachmentName')" type="text">
                     </div>
                     <div class="input-box file-box">
-                        <input placeholder="附件链接" v-model="fileUrl" type="text">
+                        <input :placeholder="$t('toolbar.left.attachmentLink')" v-model="fileUrl" type="text">
                     </div>
                     <div class="btn-box">
-                        <div @click="closePop('filePopShow')">取消</div>
-                        <div class="confirm" @click="clickHandler('file', 'insert')">确认</div>
+                        <div @click="closePop('filePopShow')">{{$t('toolbar.left.cancel')}}</div>
+                        <div class="confirm" @click="clickHandler('file', 'insert')">{{$t('toolbar.left.confirm')}}</div>
                     </div>
                 </div>
             </div>
@@ -140,20 +169,23 @@ export default {
     data() {
         return {
             imageMenuShow: false,
+            videoMenuShow: false,
             fileMenuShow: false,
             titleMenuShow: false,
             menuShowTimer: null,
+            videoShowTimer: null,
             linkPopShow: false,
             imagePopShow: false,
+            videoPopShow: false,
             filePopShow: false,
-            fileName: '【附件】',
+            fileName: this.$t('toolbar.left.fileName'),
             fileUrl: '',
             imageName: '',
             imageUrl: '',
+            videoUrl: '',
             linkName: '',
             linkUrl: '',
             imgIndex: 0
-
         }
     },
     props: {
@@ -181,11 +213,9 @@ export default {
             } else if (type === 'clear') {
                 this.clearContent(icon)
             } else {
-                console.log('default')
             }
         },
         menuHandler(icon) {
-            console.log(icon)
         },
         popHandler(icon) {
             if (icon === 'link') {
@@ -200,6 +230,8 @@ export default {
                 payload = { name: this.fileName, url: this.fileUrl }
             } else if (icon === 'link') {
                 payload = { name: this.linkName, url: this.linkUrl }
+            } else if (icon === 'video') {
+                payload = { url: this.videoUrl }
             } else {
                 // default
             }
@@ -216,6 +248,15 @@ export default {
         hideImageMenu() {
             this.menuShowTimer = setTimeout(() => {
                 this.imageMenuShow = false
+            }, 100)
+        },
+        showVideoMenu() {
+            clearTimeout(this.videoShowTimer)
+            this.videoMenuShow = true
+        },
+        hideVideoMenu() {
+            this.videoShowTimer = setTimeout(() => {
+                this.videoMenuShow = false
             }, 100)
         },
         showFileMenu() {
@@ -239,24 +280,43 @@ export default {
         addImgFromLink() {
             this.imagePopShow = true
         },
+        addVideFromLink() {
+            this.videoPopShow = true
+        },
         addFileFromLink() {
             this.filePopShow = true
         },
         addImgFromLocal(e) {
             const files = e.target.files
+            const multiple = files.length > 1
             if (files.length > 0) {
                 [].forEach.call(files, (item, index) => {
-                    this.imgAddHandler(item, index)
+                    this.imgAddHandler(item, multiple)
                 })
             }
 
             e.target.value = '' // input初始化
         },
-        imgAddHandler(file, index) {
+        addVideoFromLocal(e) {
+            const files = e.target.files
+            console.log(files)
+            if (files.length > 0) {
+                [].forEach.call(files, (item, index) => {
+                    this.videoAddHandler(item)
+                })
+            }
+
+            e.target.value = '' // input初始化
+        },
+        imgAddHandler(file, multiple) {
             this.imgIndex++
-            this.$emit('addImg', this.imgIndex, file)
+            this.$emit('addImg', this.imgIndex, file, multiple)
+        },
+        videoAddHandler(file, multiple) {
+            this.$emit('addVideo', file, multiple)
         },
         addFileFromLocal(e) {
+            // 文件上传目前支持单个
             const file = e.target.files[0]
             file && this.$emit('addFile', file)
         },
@@ -324,6 +384,7 @@ export default {
         }
     }
     .image-pop,
+    .video-pop,
     .link-pop,
     .file-pop {
         position: fixed;

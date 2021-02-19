@@ -11,6 +11,9 @@ export function insertContentAtCaret(dom, icon, payload, $vue) {
         case 'image':
             imageInsert(dom, payload, $vue)
             break
+        case 'video':
+            videoInsert(dom, payload, $vue)
+            break
         default:
             txtInsert(dom, icon, payload, $vue)
             break
@@ -44,6 +47,46 @@ function fileInsert(dom, payload, $vue) {
                 newStart = newEnd = content.length
             } else {
                 newStart = start + 1 + payload.name.length + 2
+                newEnd = newStart + end - start
+            }
+        }
+        $vue.setTextareaContent(content)
+        $vue.$nextTick(() => {
+            textArea.setSelectionRange(newStart, newEnd)
+            textArea.focus()
+        })
+    } else {
+        console.warn('the browser version is too low')
+    }
+}
+
+function videoInsert(dom, payload, $vue) {
+    const textArea = dom()
+    textArea.focus()
+    let content = textArea.value // current value
+    if ('selectionStart' in textArea) {
+        const start = textArea.selectionStart
+        const end = textArea.selectionEnd
+        let newStart = 0
+        let newEnd = 0
+
+        if (start === end) {
+            // insert
+            content = content.substring(0, start) + `@[video](${payload.url})` + content.substring(end, content.length)
+            // foucus url by url
+            if (isLocal(payload.url)) {
+                newStart = newEnd = content.length
+            } else {
+                newStart = start + 1 + 1 + 5 + 1 + 1
+                newEnd = newStart + `${payload.url}`.length
+            }
+        } else { // selected
+            // select insert, ignore the input url
+            content = content.substring(0, start) + `@[video](${content.substring(start, end)})` + content.substring(end, content.length)
+            if (isLocal(payload.url)) {
+                newStart = newEnd = content.length
+            } else {
+                newStart = start + 1 + 1 + 5 + 1 + 1
                 newEnd = newStart + end - start
             }
         }
@@ -103,6 +146,7 @@ function imageInsert(dom, payload, $vue) {
         let newStart = 0
         let newEnd = 0
         let imgContent = ''
+        let nameLength = 0
         if (payload.width || payload.height) {
             if (payload.width && payload.height) {
                 imgContent = `![${payload.name} =${payload.width}x${payload.height}](${payload.url})`
@@ -121,17 +165,48 @@ function imageInsert(dom, payload, $vue) {
             if (isLocal(payload.url)) {
                 newStart = newEnd = content.length
             } else {
-                newStart = start + 1 + 1 + payload.name.length + 1 + 1
+                if (payload.width) {
+                    nameLength += payload.width.toString().length
+                }
+
+                if (payload.height) {
+                    nameLength += payload.height.toString().length
+                }
+
+                if (nameLength > 1) {
+                    nameLength += 2 // = x 两个符号
+                }
+                newStart = start + 1 + 1 + payload.name.length + 1 + nameLength + 1 + 1
                 newEnd = newStart + `${payload.url}`.length
             }
         } else { // selected
             // select insert, ignore the input url
-            content = content.substring(0, start) + imgContent + content.substring(end, content.length)
+            if (payload.multiple) {
+                content = content.substring(0, content.length) + '\n' + imgContent
+            } else {
+                content = content.substring(0, start) + imgContent + content.substring(end, content.length)
+            }
+
             if (isLocal(payload.url)) {
                 newStart = newEnd = content.length
             } else {
-                newStart = start - 1 + 2 + payload.name.length + 2
-                newEnd = newStart + end - start
+                if (payload.multiple) {
+                    newStart = newEnd = content.length
+                } else {
+                    if (payload.width) {
+                        nameLength += payload.width.toString().length
+                    }
+
+                    if (payload.height) {
+                        nameLength += payload.height.toString().length
+                    }
+
+                    if (nameLength > 1) {
+                        nameLength += 2 // = x 两个符号
+                    }
+                    newStart = start + 2 + payload.name.length + 1 + nameLength + 2
+                    newEnd = newStart + `${payload.url}`.length
+                }
             }
         }
 

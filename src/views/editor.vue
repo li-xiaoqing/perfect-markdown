@@ -1,66 +1,82 @@
 <template>
-    <div class="editor-box">
-        <div
-            :class="[editorIsFullscrean ? 'fullscreen': '','editor']"
-        >
-            <div v-show="showToolbar" class="toolbar-box">
+    <div
+        :class="[editorIsFullscrean ? 'fullscreen': '','editor']"
+    >
+        <div v-show="showToolbar" class="toolbar-box">
 
-                <toolbar-left
-                    class="left"
-                    @addImg="addImg"
-                    @addFile="addFile"
-                    :dom="getTextarea"
-                    :customLeftToolbar="customLeftToolbar"
-                >
-                    <slot name="toolbarLeftBefore" slot="toolbarLeftBefore"></slot>
-                    <slot name="toolbarLeftAfter" slot="toolbarLeftAfter"></slot>
-                </toolbar-left>
-                <toolbar-right
-                    class="right"
-                    :dom="getRenderHtml"
-                    :helpDoc="helpDoc"
-                    :customRightToolbar="customRightToolbar"
-                >
-                    <slot name="toolbarRightBefore" slot="toolbarRightBefore"></slot>
-                    <slot name="toolbarRightAfter" slot="toolbarRightAfter"></slot>
-                </toolbar-right>
+            <toolbar-left
+                class="left"
+                @addImg="addImg"
+                @addFile="addFile"
+                :dom="getTextarea"
+                :customLeftToolbar="customLeftToolbar"
+            >
+                <slot name="toolbarLeftBefore" slot="toolbarLeftBefore"></slot>
+                <slot name="toolbarLeftAfter" slot="toolbarLeftAfter"></slot>
+            </toolbar-left>
+            <toolbar-right
+                class="right"
+                :dom="getRenderHtml"
+                :helpDoc="helpDoc"
+                :customRightToolbar="customRightToolbar"
+            >
+                <slot name="toolbarRightBefore" slot="toolbarRightBefore"></slot>
+                <slot name="toolbarRightAfter" slot="toolbarRightAfter"></slot>
+            </toolbar-right>
 
+        </div>
+        <div class="markdown-body">
+            <div
+                v-show="showTextarea"
+                :class="[editorIsSplit? 'split': 'one', 'markdown-input']"
+                @scroll="editOnScroll"
+                @click="textareaFocus"
+                ref="inputEdit"
+            >
+                <auto-textarea ref="autoTextarea" v-model="localValue"></auto-textarea>
             </div>
-            <div class="markdown-body">
-                <div
-                    v-show="showTextarea"
-                    :class="[editorIsSplit? 'split': 'one', 'markdown-input']"
-                >
-                    <auto-textarea ref="autoTextarea" v-model="localValue"></auto-textarea>
-                </div>
-                <div
-                    ref="renderHtml"
-                    class="markdown-render"
-                    :class="[showTextarea? editorIsSplit? 'split': 'hidden' : '']"
-                >
-                    <div v-html="renderValue">
-
-                    </div>
-                </div>
-                <transition name="fade">
-                    <div @click="imgPreviewSrc=null" class="img-preview" v-if="imgPreviewSrc">
-                        <img :src="imgPreviewSrc" alt="预览">
-                    </div>
-                </transition>
-            </div>
-
-            <div ref="copyHtml" class="copy-html">
+            <div
+                ref="renderHtml"
+                class="markdown-render"
+                :class="[showTextarea? editorIsSplit? 'split': 'hidden' : '']"
+            >
                 <div v-html="renderValue">
 
                 </div>
+            </div>
+            <transition name="fade">
+                <div @click="imgPreviewSrc=null" class="img-preview" v-if="imgPreviewSrc">
+                    <div class="img-box" >
+                        <img
+                            :src="imgPreviewSrc"
+                            :alt="$t('toolbar.editor.preview')"
+                            :style="{
+                                height: `${imgHeight}`
+                            }"/>
+                        <div
+                            class="img-op"
+                            @click="opClick"
+                        >
+                            <i class="iconfont icon-zoom-in" @click="zoomIn"></i>
+                            <i class="iconfont icon-zoom-out" @click="zoomOut"></i>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
+
+        <div ref="copyHtml" class="copy-html">
+            <div v-html="renderValue">
+
             </div>
         </div>
     </div>
 </template>
 <script>
-import '../assets/less/reset.less'
-import '../assets/less/github-markdown.css' // fork github-markdown
 import '../assets/fonts/iconfont.css'
+import '../assets/less/reset.less'
+import '../assets/less/tooltip.less'
+import '../assets/less/github-markdown.css'
 import ToolbarLeft from '../components/toolbar/toolbar-left'
 import ToolbarRight from '../components/toolbar/toolbar-right'
 import AutoTextarea from '../components/auto-textarea'
@@ -70,11 +86,21 @@ import { insertContentAtCaret } from '../utils/insert'
 import loader from '../utils/loader'
 import external from '../config/external'
 import md from '../utils/md'
+import { scrollLink } from '../utils/scroll'
+// 注册指令和组件
+import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
+import Vue from 'vue'
+import { i18n } from '../setup/i18n-setup'
+Vue.directive('tooltip', VTooltip)
+Vue.directive('close-popover', VClosePopover)
+Vue.component('v-popover', VPopover)
 export default {
     name: 'editor',
     data() {
         return {
-            imgPreviewSrc: null
+            imgPreviewSrc: null,
+            imgHeight: '70%',
+            zoomStep: 10
         }
     },
     props: {
@@ -139,6 +165,7 @@ export default {
         ToolbarRight,
         AutoTextarea
     },
+    i18n,
     mounted() {
         this.showToolbar && keyboardListener(this.getTextarea(), this)
         this.imagePreviewListener()
@@ -198,7 +225,7 @@ export default {
                 return this.$refs['renderHtml']
             }
         },
-        async addImg(index, file) {
+        async addImg(index, file, multiple) {
             const ret = await this.uploadImgFn(file)
             // width height
             let wh = {}
@@ -210,6 +237,7 @@ export default {
             }
             if (ret.upload) {
                 payload.url = ret.url
+                payload.multiple = multiple
                 insertContentAtCaret(this.getTextarea, 'image', payload, this)
             } else {
                 const reader = new FileReader()
@@ -217,6 +245,24 @@ export default {
                     md.imageAdd(index, e.target.result) // plugin
                     payload.url = index
                     insertContentAtCaret(this.getTextarea, 'image', payload, this)
+                }
+
+                file && reader.readAsDataURL(file)
+            }
+        },
+        async addVideo(file, multiple) {
+            const ret = await this.uploadImgFn(file)
+            // width height
+            let payload = { name: file.name }
+            if (ret.upload) {
+                payload.url = ret.url
+                payload.multiple = multiple
+                insertContentAtCaret(this.getTextarea, 'video', payload, this)
+            } else {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    payload.url = e.target.result // 本地base64
+                    insertContentAtCaret(this.getTextarea, 'video', payload, this)
                 }
 
                 file && reader.readAsDataURL(file)
@@ -248,23 +294,28 @@ export default {
             if (this.plugins.mathjax) {
                 setTimeout(() => {
                     // todos: split MathJax render
-                    window.MathJax && window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, document.getElementsByClassName('copy-html'), () => {
-                        const copy = document.getElementsByClassName('copy-html')[0].innerHTML
-                        document.getElementsByClassName('markdown-render')[0].innerHTML = copy
+                    const copyDom = document.getElementsByClassName('copy-html')
+                    const renderDom = document.getElementsByClassName('markdown-render')
+                    window.MathJax && window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, copyDom, () => {
+                        const copy = copyDom[0] && copyDom[0].innerHTML
+                        renderDom[0] && (renderDom[0].innerHTML = copy)
                     }])
                 }, 200)
                 // todos: split transform the code latex => mathajx
                 result = val.replace(/\${1,2}[\s\S]*(\\\\)[\s\S]*\${1,2}/g, (match) => {
                     return match.replace(/\\\\/g, `\\cr`)
-                }).replace(/\${1,2}[\s\S]*_[\s\S]*\${1,2}/g, (match) => { // em conflict
-                    return match.replace(/_/g, `\\_`) // bow to markdown
                 })
+
+                /* .replace(/\${1,2}[\s\S]*_[\s\S]*\${1,2}/g, (match) => { // em conflict
+                    return match.replace(/_/g, `\\_`) // bow to markdown
+                }) */
             }
             return md.render(result)
         },
         imagePreviewListener() {
             // renderHtml img click
             this.$refs.renderHtml.addEventListener('click', e => {
+                this.imgHeight = '70%'
                 const event = e || window.event
                 const ele = event.srcElement || event.target
                 if (ele.tagName === 'IMG') {
@@ -275,6 +326,27 @@ export default {
                     }
                 }
             })
+        },
+        opClick(e) {
+            e.stopPropagation()
+            e.preventDefault()
+            return false
+        },
+        zoomIn() {
+            let width = +this.imgHeight.split('%')[0]
+            let result = width - this.zoomStep > 0 ? width - this.zoomStep : 0
+            this.imgHeight = `${result}%`
+        },
+        zoomOut() {
+            let width = +this.imgHeight.split('%')[0]
+            let result = width + this.zoomStep > 0 ? width + this.zoomStep : 0
+            this.imgHeight = `${result}%`
+        },
+        editOnScroll(e) {
+            scrollLink(e, this)
+        },
+        textareaFocus() {
+            this.$refs['autoTextarea'].$refs['textarea'].focus()
         }
     },
     watch: {
@@ -285,10 +357,16 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.editor-box {
+.editor {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    border: none;
+    box-shadow: 0 0px 3px#ccc;
+    background: #fff;
+    min-height: 400px;
     margin: 20px auto;
-    .fullscreen {
+    &.fullscreen {
         position: fixed;
         left: 0;
         right: 0;
@@ -296,65 +374,97 @@ export default {
         top: 0;
         height: auto;
         z-index: 1501;
+        margin: 0;
     }
-    .editor {
-        width: 100%;
-        border: none;
-        box-shadow: 0 0px 3px#ccc;
-        background: #fff;
-        overflow: auto;
-        .toolbar-box {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-            .left {
-                flex: 3;
-                justify-content: flex-start;
-            }
-            .right {
-                flex: 1;
-                justify-content: flex-end;
-            }
+    .toolbar-box {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        .left {
+            flex: 3;
+            justify-content: flex-start;
         }
-        .markdown-body {
+        .right {
+            flex: 1;
+            justify-content: flex-end;
+        }
+    }
+    .markdown-body {
+        display: flex;
+        // min-height: 400px;
+        flex: 1;
+        overflow: hidden;
+        .img-preview {
             display: flex;
-            min-height: 400px;
-            .img-preview {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.7);
-                z-index: 1600;
-                transition: all 0.1s linear 0s;
-            }
-
-            .markdown-input {
-                padding: 10px 20px;
-            }
-            .split {
-                width: 50%;
-                box-shadow: 0 0px 3px#ccc;
-            }
-            .one {
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1600;
+            transition: all 0.1s linear 0s;
+            .img-box {
                 width: 100%;
-            }
-            .hidden {
-                display: none;
-            }
-            .markdown-render {
-                text-align: left;
-                padding: 10px 26px;
+                height: 100%;
+                overflow: auto;
+                img {
+                    max-width: initial;
+                    position: absolute;
+                    margin: auto;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                }
+                .img-op {
+                    position: absolute;
+                    left: 50%;
+                    bottom: 20px;
+                    background-color: #333333;
+                    border-radius: 5px;
+                    padding: 0 12px;
+                    i {
+                        display: inline-block;
+                        font-size: 20px;
+                        padding: 10px;
+                        color: #fff;
+                        &:hover {
+                            background: #e9e8e8;
+                            color: #333;
+                        }
+                    }
+                }
             }
         }
-        .copy-html {
+
+        .markdown-input {
+            padding: 10px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .split {
+            width: 50%;
+            box-shadow: 0 0px 3px#ccc;
+        }
+        .one {
+            width: 100%;
+        }
+        .hidden {
             display: none;
         }
+        .markdown-render {
+            text-align: left;
+            padding: 10px 26px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    }
+    .copy-html {
+        display: none;
     }
 }
 </style>

@@ -23,11 +23,16 @@ import container from 'markdown-it-container'
 // 目录
 import toc from 'markdown-it-toc'
 
+import attrs from 'markdown-it-attrs'
+
 import mdhl from '../plugins/markdown-it-highlight/'
 // math katex
 import katex from 'markdown-it-katex' // todos: dynamic import
 // local图片插件
 import miip from '../plugins/markdown-it-images'
+
+import video from '../plugins/markdown-it-video'
+
 // todos: inject merge
 const plugins = {
     emoji: emoji,
@@ -43,14 +48,16 @@ const plugins = {
     toc: toc,
     mdhl: mdhl,
     katex: katex,
-    miip: miip
+    miip: miip,
+    attrs,
+    video
 }
 
 const config = {
     html: true, // Enable HTML tags in source
     xhtmlOut: false, // Use '/' to close single tags (<br />).
     // This is only for full CommonMark compatibility.
-    breaks: false, // Convert '\n' in paragraphs into <br>
+    breaks: true, // Convert '\n' in paragraphs into <br>
     langPrefix: 'language-', // CSS language prefix for fenced blocks. Can be
     // useful for external highlighters.
     linkify: false, // Autoconvert URL-like text to links
@@ -85,7 +92,9 @@ const installConfig = {
     toc: true,
     mdhl: true,
     katex: false,
-    miip: true
+    miip: true,
+    attrs: true,
+    video: true
 }
 // a link target
 const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
@@ -94,9 +103,9 @@ const defaultRender = md.renderer.rules.link_open || function (tokens, idx, opti
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
     const aIndex = tokens[idx].attrIndex('target')
     if (aIndex < 0) {
-        tokens[idx].attrPush(['target', '_blank'])
+        // tokens[idx].attrPush(['target', '_blank']) // keep default blank
     } else {
-        tokens[idx].attrs[aIndex][1] = '_blank'
+        // tokens[idx].attrs[aIndex][1] = '_blank' // keep attrs
     }
     return defaultRender(tokens, idx, options, env, self)
 }
