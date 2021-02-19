@@ -26,7 +26,7 @@
     "branch": "dev"
   },
   "dependencies": {
-    "highlight.js": "~9.14.2",
+    "highlight.js": "~10.4.1",
     "markdown-it": "^8.4.2",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-attrs": "^2.3.4",
