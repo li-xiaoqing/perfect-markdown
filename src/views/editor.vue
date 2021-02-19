@@ -19,7 +19,7 @@
                     class="right"
                     :dom="getRenderHtml"
                     :helpDoc="helpDoc"
-                    :customLeftToolbar="customLeftToolbar"
+                    :customRightToolbar="customRightToolbar"
                 >
                     <slot name="toolbarRightBefore" slot="toolbarRightBefore"></slot>
                     <slot name="toolbarRightAfter" slot="toolbarRightAfter"></slot>

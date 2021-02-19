@@ -19,7 +19,7 @@ $ npm install perfect-markdown --save
 ```javascript
     import Vue from 'vue'
     import store from '@/store' // vuex is required in perfect-markdown
-    import pmd from 'perfect-markdown'
+    import pmd from 'perfect-markdown' //  or import pmd from 'perfect-markdown/lib/pmd.umd.min.js'
     // use
     Vue.use(pmd, { store }) // register pmd vuex module
 
@@ -38,14 +38,6 @@ $ npm install perfect-markdown --save
     ></pmd>
 </div>
 ```
-`webpack.base.conf.js`
-```javascript
-    {
-        test: /\.md$/,
-        loader: 'raw-loader'
-    }
-```
-
 
 ## API
 
