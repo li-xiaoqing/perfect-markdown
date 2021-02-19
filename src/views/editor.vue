@@ -7,7 +7,6 @@
             <toolbar-left
                 class="left"
                 @addImg="addImg"
-                @addVideo="addVideo"
                 @addFile="addFile"
                 :dom="getTextarea"
                 :customLeftToolbar="customLeftToolbar"
@@ -19,7 +18,7 @@
                 class="right"
                 :dom="getRenderHtml"
                 :helpDoc="helpDoc"
-                :customLeftToolbar="customLeftToolbar"
+                :customRightToolbar="customRightToolbar"
             >
                 <slot name="toolbarRightBefore" slot="toolbarRightBefore"></slot>
                 <slot name="toolbarRightAfter" slot="toolbarRightAfter"></slot>

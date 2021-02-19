@@ -1,7 +1,7 @@
 {
   "name": "perfect-markdown",
-  "version": "1.1.0",
-  "main": "src/index.js",
+  "version": "1.1.2",
+  "main": "lib/pmd.umd.min.js",
   "files": [
     "lib",
     "src"
@@ -17,9 +17,13 @@
   "license": "Apache 2.0",
   "scripts": {
     "serve": "vue-cli-service serve --open",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build  --target lib --name pmd ./src/index.js",
     "lint": "vue-cli-service lint",
-    "publish": "vue-cli-service build --target lib --name pmd ./src/index.js"
+    "publish": "npm run build && np --branch dev",
+    "test": "echo '过pn publish使用'"
+  },
+  "np": {
+    "branch": "dev"
   },
   "dependencies": {
     "highlight.js": "~9.14.2",
