@@ -60,7 +60,6 @@
     "eslint-plugin-vue": "^5.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "np": "^7.4.0",
     "raw-loader": "^0.5.1",
     "vue": "^2.6.7",
     "vue-template-compiler": "^2.6.7"
