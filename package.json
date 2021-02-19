@@ -1,6 +1,6 @@
 {
   "name": "perfect-markdown",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "main": "lib/pmd.umd.min.js",
   "files": [
     "lib",
@@ -19,7 +19,10 @@
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build  --target lib --name pmd ./src/index.js",
     "lint": "vue-cli-service lint",
-    "publish": "npm run build && np"
+    "publish": "npm run build && np --branch dev"
+  },
+  "np": {
+    "branch": "dev"
   },
   "dependencies": {
     "highlight.js": "~9.14.2",
@@ -52,7 +55,6 @@
     "eslint-plugin-vue": "^5.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "np": "^7.4.0",
     "raw-loader": "^0.5.1",
     "vue": "^2.6.7",
     "vue-template-compiler": "^2.6.7"
