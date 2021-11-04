@@ -43,7 +43,7 @@ $ npm install perfect-markdown --save
         :uploadImgFn="uploadFn"
         :uploadFileFn="uploadFn"
         :customLang="customLang" // your local custom language file 
-        // :customLang="en" // or choose different locale from the package languages 
+        // customLang="en" // or choose different locale from the package languages 
         :helpDoc="helpDoc" // your local custom help document 
         :plugins="{katex: true}"
         :imgWidthHeightAttr="{width: true, height: false}"
