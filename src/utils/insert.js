@@ -1,5 +1,3 @@
-import iconConfig from './toolbar-icon'
-
 export function insertContentAtCaret(dom, icon, payload, $vue) {
     switch (icon) {
         case 'file':
@@ -227,16 +225,18 @@ function txtInsert(dom, icon, payload, $vue) {
     if ('selectionStart' in textArea) {
         const start = textArea.selectionStart
         const end = textArea.selectionEnd
-        const prefix = iconConfig[icon].prefix
-        const subfix = iconConfig[icon].subfix
-        const prefixLen = iconConfig[icon].prefix.length
-        const subfixLen = iconConfig[icon].subfix.length
+        const prefix = window.i18n.t(`iconConfig.${icon}.prefix`)
+        const subfix = window.i18n.t(`iconConfig.${icon}.subfix`)
+        const txttxt = window.i18n.t(`iconConfig.${icon}.txt`)
+        const txttxtLen = txttxt.length
+        const prefixLen = prefix.length
+        const subfixLen = subfix.length
         let newStart = 0
         let newEnd = 0
         if (start === end) {
-            content = content.substring(0, start) + `${prefix}${iconConfig[icon].txt}${subfix}` + content.substring(end, content.length)
+            content = content.substring(0, start) + `${prefix}${txttxt}${subfix}` + content.substring(end, content.length)
             newStart = start + prefixLen
-            newEnd = newStart + iconConfig[icon].txt.length
+            newEnd = newStart + txttxtLen
         } else {
             if (content.substring(start - prefixLen, start) === prefix && content.substring(end, end + subfixLen) === subfix) {
                 // cancel

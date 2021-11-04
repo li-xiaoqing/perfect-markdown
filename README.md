@@ -20,9 +20,18 @@ $ npm install perfect-markdown --save
     import Vue from 'vue'
     import store from '@/store' // vuex is required in perfect-markdown
     import pmd from 'perfect-markdown' //  or import pmd from 'perfect-markdown/lib/pmd.umd.min.js'
+    import customHelpDoc from '../demoLang/help.md'
+    import customLang from '../demoLang/language'
     // use
     Vue.use(pmd, { store }) // register pmd vuex module
-
+    ...
+    data() {
+        return {
+            customHelpDoc,
+            customLang
+        }
+    },
+    ...
 ```
 `editor.vue`
 ```html
@@ -33,6 +42,9 @@ $ npm install perfect-markdown --save
         :showTextarea="true"
         :uploadImgFn="uploadFn"
         :uploadFileFn="uploadFn"
+        :customLang="customLang" // your local custom language file 
+        // :customLang="en" // or choose different locale from the package languages 
+        :helpDoc="helpDoc" // your local custom help document 
         :plugins="{katex: true}"
         :imgWidthHeightAttr="{width: true, height: false}"
     ></pmd>
@@ -51,6 +63,8 @@ $ npm install perfect-markdown --save
 | uploadImgFn  | Function | funtion | uploadImg                                              |
 |  uploadFileFn | Function | funtion | uploadFile                                                 |
 |  plugins        | Object   |   {}    | katex or mathjax plugin, { katex: true } or { mathjax: true }. (mathjax  is more powerful than katex, but it rendering efficiency is lower) |
+|  helpDoc |   String  |    false   |   use your local custom help document    |
+|  customLang |   Object or String  |    false   |   use your local custom language file or choose one from the package as default locale. e.g. 'en', 'tr' or 'zh-CN'  |
 |  customLeftToolbar |   Boolean  |    false   |       |
 |  customRightToolbar |   Boolean  |    false   |       |
 |  imgWidthHeightAttr |   Object  |    {width: false, height: false}   | this is default output \[name](url), and all true will output \[name =WxH](url)      |

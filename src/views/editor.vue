@@ -90,7 +90,7 @@ import { scrollLink } from '../utils/scroll'
 // 注册指令和组件
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 import Vue from 'vue'
-import { i18n } from '../setup/i18n-setup'
+import { i18n, setI18nLocale, setLangMessages } from '../setup/i18n-setup'
 Vue.directive('tooltip', VTooltip)
 Vue.directive('close-popover', VClosePopover)
 Vue.component('v-popover', VPopover)
@@ -140,6 +140,10 @@ export default {
             type: String,
             default: ''
         },
+        customLang: {
+            type: [Object, String],
+            default: () => ({}) || ''
+        },
         customLeftToolbar: {
             type: Boolean,
             default: false
@@ -172,6 +176,15 @@ export default {
         this.localValue = this.value
     },
     async created() {
+        if (this.customLang && typeof this.customLang === 'object') {
+            if (Object.keys(this.customLang).length === 1) {
+                setLangMessages(Object.keys(this.customLang)[0], Object.values(this.customLang)[0])
+            } else {
+                console.error('Invalid custom language file. Please refer to the help documents or relevant demo language file for the customLang prop.')
+            }
+        } else if (this.customLang && typeof this.customLang === 'string') {
+            setI18nLocale(this.customLang)
+        }
         md.init(this.plugins)
         // option inject
         if (this.plugins.katex) {
@@ -283,7 +296,7 @@ export default {
         async addFile(file) {
             const ret = await this.uploadFileFn(file)
             if (ret.upload) {
-                insertContentAtCaret(this.getTextarea, 'link', { name: '【附件】' + file.name, url: ret.url }, this)
+                insertContentAtCaret(this.getTextarea, 'link', { name: this.$t('toolbar.left.fileName') + file.name, url: ret.url }, this)
             } else {
                 alert('please config the props uploadFileFn')
             }

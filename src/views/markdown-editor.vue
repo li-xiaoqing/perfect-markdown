@@ -10,6 +10,8 @@
                 :showToolbar="true"
                 v-model="value"
                 :uploadFileFn="fileUplod"
+                :helpDoc="customHelpDoc"
+                :customLang="customLang"
                 :plugins="{katex: true}"
                 :imgWidthHeightAttr="{width: true, height: false}"
             ></pmd>
@@ -18,11 +20,16 @@
 </template>
 <script>
 import pmd from '../index'
+import customHelpDoc from '../demoLang/help.md'
+import customLang from '../demoLang/language'
+
 export default {
     data() {
         return {
             title: 'demo',
-            value: '# demo'
+            value: '# demo',
+            customHelpDoc,
+            customLang
         }
     },
     created() {

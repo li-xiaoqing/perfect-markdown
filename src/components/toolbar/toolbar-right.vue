@@ -119,7 +119,7 @@ export default {
         '$i18n.locale': {
             immediate: true,
             handler(val) {
-                this.helpMD = md.render(help[val || 'en'] )
+                this.helpMD = md.render(this.helpDoc ? this.helpDoc : help[val || 'en'] )
             }
         }
     }

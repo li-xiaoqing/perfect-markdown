@@ -12,8 +12,9 @@ export const i18n = new VueI18n({
     fallbackLocale: 'en',
     messages // 设置语言环境信息
 })
+window.i18n = i18n // required for vanilla js internationalization
 
-const loadedLanguages = ['en'] // 我们的预装默认语言
+const loadedLanguages = ['en', 'tr'] // 我们的预装默认语言
 
 /**
  * add help doc
