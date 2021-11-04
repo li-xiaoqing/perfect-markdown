@@ -16,19 +16,19 @@
                         @mouseleave="hideTitleMenu"
                     >
                         <li @click="clickHandler('title1', 'insert')">
-                            {{$t('toolbar.left.h1')}}
+                            <h1>{{$t('toolbar.left.h1')}}</h1>
                         </li>
                         <li @click="clickHandler('title2', 'insert')">
-                            {{$t('toolbar.left.h2')}}
+                            <h2>{{$t('toolbar.left.h2')}}</h2>
                         </li>
                         <li @click="clickHandler('title3', 'insert')">
-                            {{$t('toolbar.left.h3')}}
+                            <h3>{{$t('toolbar.left.h3')}}</h3>
                         </li>
                         <li @click="clickHandler('title4', 'insert')">
-                            {{$t('toolbar.left.h4')}}
+                            <h4>{{$t('toolbar.left.h4')}}</h4>
                         </li>
                         <li @click="clickHandler('title5', 'insert')">
-                            {{$t('toolbar.left.h5')}}
+                            <h5>{{$t('toolbar.left.h5')}}</h5>
                         </li>
                     </ul>
                 </transition>
@@ -343,6 +343,7 @@ export default {
     span {
         position: relative;
         padding: 6px;
+        cursor: pointer;
         &:hover {
             background: #e9e8e8;
         }
@@ -350,14 +351,14 @@ export default {
     .icon-menu {
         display: block;
         position: absolute;
-        top: 60px;
+        top: 42px;
         left: -40px;
         z-index: 99;
-        width: 120px;
+        width: fit-content;
+        min-width: 120px;
         box-shadow: 0 0px 3px #ccc;
         line-height: 1.5;
         background: #fff;
-        padding: 20px 0;
         &.fade-enter-active,
         &.fade-leave-active {
             opacity: 1;
@@ -369,9 +370,13 @@ export default {
         }
         li {
             position: relative;
-            text-align: center;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 10px;
             &:hover {
                 background: #e9e8e8;
+                cursor: pointer;
             }
             input {
                 position: absolute;
@@ -380,6 +385,45 @@ export default {
                 width: 100%;
                 height: 100%;
                 opacity: 0;
+                &[type=file]::-webkit-file-upload-button {
+                    -webkit-appearance: button;
+                    cursor: pointer;
+                }
+            }
+            h1 {
+                display: block;
+                font-size: 2em;
+                margin: 0;
+                font-weight: bold;
+            }
+            h2 {
+                display: block;
+                font-size: 1.5em;
+                margin: 0;
+                font-weight: bold;
+            }
+            h3 {
+                display: block;
+                font-size: 1.17em;
+                margin: 0;
+                font-weight: bold;
+            }
+            h4 {
+                display: block;
+                margin: 0;
+                font-weight: bold;
+            }
+            h5 {
+                display: block;
+                font-size: .83em;
+                margin: 0;
+                font-weight: bold;
+            }
+            h6 {
+                display: block;
+                font-size: .67em;
+                margin: 0;
+                font-weight: bold;
             }
         }
     }
@@ -433,6 +477,9 @@ export default {
                     height: 36px;
                     line-height: 36px;
                     margin: 6px;
+                    &:hover {
+                        cursor: pointer;
+                    }
                     &.confirm {
                         background: #409eff;
                         color: #fff;

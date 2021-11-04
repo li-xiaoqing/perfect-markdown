@@ -136,6 +136,7 @@ export default {
     }
     span {
         padding: 6px;
+        cursor: pointer;
         &.hover {
             background: #e9e8e8;
         }
@@ -151,6 +152,10 @@ export default {
             left: 6px;
             top: 6px;
             opacity: 0;
+            &[type=file]::-webkit-file-upload-button {
+                -webkit-appearance: button;
+                cursor: pointer;
+            }
         }
     }
     .help-pop {
