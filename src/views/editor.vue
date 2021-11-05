@@ -93,6 +93,8 @@ import { scrollLink } from '../utils/scroll'
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 import Vue from 'vue'
 import { i18n, setI18nLocale, setLangMessages } from '../setup/i18n-setup'
+
+VTooltip.options.defaultContainer = false
 Vue.directive('tooltip', VTooltip)
 Vue.directive('close-popover', VClosePopover)
 Vue.component('v-popover', VPopover)
@@ -373,27 +375,34 @@ export default {
 </script>
 <style lang="less" scoped>
 .pmd-editor {
-    width: 75%;
-    margin: 0 auto;
+    width: 100%;
+    padding: 20px;
     .editor-box {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 500px;
+        height: 100%;
         border: none;
         box-shadow: 0 0px 3px#ccc;
         background: #fff;
         min-height: 400px;
-        margin: 20px auto;
+        margin: 0 auto;
         &.fullscreen {
             position: fixed;
             left: 0;
             right: 0;
             bottom: 0;
             top: 0;
-            height: auto;
+            min-width: 100%;
+            min-height: 100%;
             z-index: 1501;
             margin: 0;
+            ::v-deep .tooltip-arrow {
+                display: none!important;
+            }
+            ::v-deep .tooltip-inner {
+                display: none!important;
+            }
         }
         .toolbar-box {
             display: flex;
