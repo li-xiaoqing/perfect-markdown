@@ -1,21 +1,16 @@
 <template>
     <div class="editor-demo">
         <h1>{{title}}</h1>
-        <div
-            class="pmd-editor"
-        >
-            <pmd
-                class="editor-box"
-                :showTextarea="true"
-                :showToolbar="true"
-                v-model="value"
-                :uploadFileFn="fileUplod"
-                :helpDoc="customHelpDoc"
-                :customLang="customLang"
-                :plugins="{katex: true}"
-                :imgWidthHeightAttr="{width: true, height: false}"
-            ></pmd>
-        </div>
+        <pmd
+            :showTextarea="true"
+            :showToolbar="true"
+            v-model="value"
+            :uploadFileFn="fileUplod"
+            :helpDoc="customHelpDoc"
+            :customLang="customLang"
+            :plugins="{katex: true}"
+            :imgWidthHeightAttr="{width: true, height: false}"
+        ></pmd>
     </div>
 </template>
 <script>
@@ -48,12 +43,3 @@ export default {
 
 }
 </script>
-<style lang="less" scoped>
-.pmd-editor {
-    width: 75%;
-    margin: 0 auto;
-    .editor-box {
-        height: 500px;
-    }
-}
-</style>

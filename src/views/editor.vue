@@ -1,73 +1,75 @@
 <template>
-    <div
-        :class="[editorIsFullscrean ? 'fullscreen': '','editor']"
-    >
-        <div v-show="showToolbar" class="toolbar-box">
+    <div class="pmd-editor">
+        <div
+            :class="[editorIsFullscrean ? 'fullscreen': '','editor-box']"
+        >
+            <div v-show="showToolbar" class="toolbar-box">
 
-            <toolbar-left
-                class="left"
-                @addImg="addImg"
-                @addFile="addFile"
-                :dom="getTextarea"
-                :customLeftToolbar="customLeftToolbar"
-            >
-                <slot name="toolbarLeftBefore" slot="toolbarLeftBefore"></slot>
-                <slot name="toolbarLeftAfter" slot="toolbarLeftAfter"></slot>
-            </toolbar-left>
-            <toolbar-right
-                class="right"
-                :dom="getRenderHtml"
-                :helpDoc="helpDoc"
-                :customRightToolbar="customRightToolbar"
-            >
-                <slot name="toolbarRightBefore" slot="toolbarRightBefore"></slot>
-                <slot name="toolbarRightAfter" slot="toolbarRightAfter"></slot>
-            </toolbar-right>
+                <toolbar-left
+                    class="left"
+                    @addImg="addImg"
+                    @addFile="addFile"
+                    :dom="getTextarea"
+                    :customLeftToolbar="customLeftToolbar"
+                >
+                    <slot name="toolbarLeftBefore" slot="toolbarLeftBefore"></slot>
+                    <slot name="toolbarLeftAfter" slot="toolbarLeftAfter"></slot>
+                </toolbar-left>
+                <toolbar-right
+                    class="right"
+                    :dom="getRenderHtml"
+                    :helpDoc="helpDoc"
+                    :customRightToolbar="customRightToolbar"
+                >
+                    <slot name="toolbarRightBefore" slot="toolbarRightBefore"></slot>
+                    <slot name="toolbarRightAfter" slot="toolbarRightAfter"></slot>
+                </toolbar-right>
 
-        </div>
-        <div class="markdown-body">
-            <div
-                v-show="showTextarea"
-                :class="[editorIsSplit? 'split': 'one', 'markdown-input']"
-                @scroll="editOnScroll"
-                @click="textareaFocus"
-                ref="inputEdit"
-            >
-                <auto-textarea ref="autoTextarea" v-model="localValue"></auto-textarea>
             </div>
-            <div
-                ref="renderHtml"
-                class="markdown-render"
-                :class="[showTextarea? editorIsSplit? 'split': 'hidden' : '']"
-            >
+            <div class="markdown-body">
+                <div
+                    v-show="showTextarea"
+                    :class="[editorIsSplit? 'split': 'one', 'markdown-input']"
+                    @scroll="editOnScroll"
+                    @click="textareaFocus"
+                    ref="inputEdit"
+                >
+                    <auto-textarea ref="autoTextarea" v-model="localValue"></auto-textarea>
+                </div>
+                <div
+                    ref="renderHtml"
+                    class="markdown-render"
+                    :class="[showTextarea? editorIsSplit? 'split': 'hidden' : '']"
+                >
+                    <div v-html="renderValue">
+
+                    </div>
+                </div>
+                <transition name="fade">
+                    <div @click="imgPreviewSrc=null" class="img-preview" v-if="imgPreviewSrc">
+                        <div class="img-box" >
+                            <img
+                                :src="imgPreviewSrc"
+                                :alt="$t('toolbar.editor.preview')"
+                                :style="{
+                                    height: `${imgHeight}`
+                                }"/>
+                            <div
+                                class="img-op"
+                                @click="opClick"
+                            >
+                                <i class="iconfont icon-zoom-in" @click="zoomIn"></i>
+                                <i class="iconfont icon-zoom-out" @click="zoomOut"></i>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+
+            <div ref="copyHtml" class="copy-html">
                 <div v-html="renderValue">
 
                 </div>
-            </div>
-            <transition name="fade">
-                <div @click="imgPreviewSrc=null" class="img-preview" v-if="imgPreviewSrc">
-                    <div class="img-box" >
-                        <img
-                            :src="imgPreviewSrc"
-                            :alt="$t('toolbar.editor.preview')"
-                            :style="{
-                                height: `${imgHeight}`
-                            }"/>
-                        <div
-                            class="img-op"
-                            @click="opClick"
-                        >
-                            <i class="iconfont icon-zoom-in" @click="zoomIn"></i>
-                            <i class="iconfont icon-zoom-out" @click="zoomOut"></i>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-        </div>
-
-        <div ref="copyHtml" class="copy-html">
-            <div v-html="renderValue">
-
             </div>
         </div>
     </div>
@@ -370,114 +372,119 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.editor {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    border: none;
-    box-shadow: 0 0px 3px#ccc;
-    background: #fff;
-    min-height: 400px;
-    margin: 20px auto;
-    &.fullscreen {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        height: auto;
-        z-index: 1501;
-        margin: 0;
-    }
-    .toolbar-box {
+.pmd-editor {
+    width: 75%;
+    margin: 0 auto;
+    .editor-box {
         display: flex;
-        flex-wrap: wrap;
-        padding: 10px;
-        border-bottom: 1px solid #ccc;
-        .left {
-            flex: 3;
-            justify-content: flex-start;
-        }
-        .right {
-            flex: 1;
-            justify-content: flex-end;
-        }
-    }
-    .markdown-body {
-        display: flex;
-        // min-height: 400px;
-        flex: 1;
-        overflow: hidden;
-        .img-preview {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        height: 500px;
+        border: none;
+        box-shadow: 0 0px 3px#ccc;
+        background: #fff;
+        min-height: 400px;
+        margin: 20px auto;
+        &.fullscreen {
             position: fixed;
             left: 0;
             right: 0;
-            top: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1600;
-            transition: all 0.1s linear 0s;
-            .img-box {
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                img {
-                    max-width: initial;
-                    position: absolute;
-                    margin: auto;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                }
-                .img-op {
-                    position: absolute;
-                    left: 50%;
-                    bottom: 20px;
-                    background-color: #333333;
-                    border-radius: 5px;
-                    padding: 0 12px;
-                    i {
-                        display: inline-block;
-                        font-size: 20px;
-                        padding: 10px;
-                        color: #fff;
-                        &:hover {
-                            background: #e9e8e8;
-                            color: #333;
+            top: 0;
+            height: auto;
+            z-index: 1501;
+            margin: 0;
+        }
+        .toolbar-box {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            .left {
+                flex: 3;
+                justify-content: flex-start;
+            }
+            .right {
+                flex: 1;
+                justify-content: flex-end;
+            }
+        }
+        .markdown-body {
+            display: flex;
+            // min-height: 400px;
+            flex: 1;
+            overflow: hidden;
+            .img-preview {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 1600;
+                transition: all 0.1s linear 0s;
+                .img-box {
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    img {
+                        max-width: initial;
+                        position: absolute;
+                        margin: auto;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                    }
+                    .img-op {
+                        position: absolute;
+                        left: 50%;
+                        bottom: 20px;
+                        background-color: #333333;
+                        border-radius: 5px;
+                        padding: 0 12px;
+                        i {
+                            display: inline-block;
+                            font-size: 20px;
+                            padding: 10px;
+                            color: #fff;
+                            &:hover {
+                                background: #e9e8e8;
+                                color: #333;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        .markdown-input {
-            padding: 10px 20px;
-            overflow-y: auto;
-            overflow-x: hidden;
+            .markdown-input {
+                padding: 10px 20px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            .split {
+                width: 50%;
+                box-shadow: 0 0px 3px#ccc;
+            }
+            .one {
+                width: 100%;
+            }
+            .hidden {
+                display: none;
+            }
+            .markdown-render {
+                text-align: left;
+                padding: 10px 26px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
         }
-        .split {
-            width: 50%;
-            box-shadow: 0 0px 3px#ccc;
-        }
-        .one {
-            width: 100%;
-        }
-        .hidden {
+        .copy-html {
             display: none;
         }
-        .markdown-render {
-            text-align: left;
-            padding: 10px 26px;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-    }
-    .copy-html {
-        display: none;
     }
 }
 </style>

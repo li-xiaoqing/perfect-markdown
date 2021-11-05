@@ -126,67 +126,69 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.icon-box {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    i {
-        font-size: 18px;
-        cursor: pointer;
-    }
-    span {
-        padding: 6px;
-        cursor: pointer;
-        &.hover {
-            background: #e9e8e8;
+.pmd-editor {
+    .icon-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        i {
+            font-size: 18px;
+            cursor: pointer;
         }
-    }
-    .selected {
-        background: #e9e8e8;
-    }
-    .import {
-        position: relative;
-        input {
-            position: absolute;
-            width: 18px;
-            left: 6px;
-            top: 6px;
-            opacity: 0;
-            &[type=file]::-webkit-file-upload-button {
-                -webkit-appearance: button;
-                cursor: pointer;
+        span {
+            padding: 6px;
+            cursor: pointer;
+            &.hover {
+                background: #e9e8e8;
             }
         }
-    }
-    .help-pop {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1600;
-        -webkit-transition: all 0.1s linear 0s;
-        transition: all 0.1s linear 0s;
-        .dialog {
+        .selected {
+            background: #e9e8e8;
+        }
+        .import {
+            position: relative;
+            input {
+                position: absolute;
+                width: 18px;
+                left: 6px;
+                top: 6px;
+                opacity: 0;
+                &[type=file]::-webkit-file-upload-button {
+                    -webkit-appearance: button;
+                    cursor: pointer;
+                }
+            }
+        }
+        .help-pop {
             position: fixed;
-            box-sizing: border-box;
-            text-align: left;
-            width: 50%;
-            left: 25%;
-            height: 60%;
-            overflow-y: auto;
-            padding: 40px;
-            top: 25%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1600;
             -webkit-transition: all 0.1s linear 0s;
             transition: all 0.1s linear 0s;
-            z-index: 3;
-            background: #fff;
-            border-radius: 2px;
-            box-shadow: 0 0px 5px rgba(255, 255, 255, 0.157),
-                0 0px 5px rgba(255, 255, 255, 0.227);
-            color: #333;
-            font-size: 14px;
+            .dialog {
+                position: fixed;
+                box-sizing: border-box;
+                text-align: left;
+                width: 50%;
+                left: 25%;
+                height: 60%;
+                overflow-y: auto;
+                padding: 40px;
+                top: 25%;
+                -webkit-transition: all 0.1s linear 0s;
+                transition: all 0.1s linear 0s;
+                z-index: 3;
+                background: #fff;
+                border-radius: 2px;
+                box-shadow: 0 0px 5px rgba(255, 255, 255, 0.157),
+                    0 0px 5px rgba(255, 255, 255, 0.227);
+                color: #333;
+                font-size: 14px;
+            }
         }
     }
 }
