@@ -16,19 +16,19 @@
                         @mouseleave="hideTitleMenu"
                     >
                         <li @click="clickHandler('title1', 'insert')">
-                            {{$t('toolbar.left.h1')}}
+                            <h1>{{$t('toolbar.left.h1')}}</h1>
                         </li>
                         <li @click="clickHandler('title2', 'insert')">
-                            {{$t('toolbar.left.h2')}}
+                            <h2>{{$t('toolbar.left.h2')}}</h2>
                         </li>
                         <li @click="clickHandler('title3', 'insert')">
-                            {{$t('toolbar.left.h3')}}
+                            <h3>{{$t('toolbar.left.h3')}}</h3>
                         </li>
                         <li @click="clickHandler('title4', 'insert')">
-                            {{$t('toolbar.left.h4')}}
+                            <h4>{{$t('toolbar.left.h4')}}</h4>
                         </li>
                         <li @click="clickHandler('title5', 'insert')">
-                            {{$t('toolbar.left.h5')}}
+                            <h5>{{$t('toolbar.left.h5')}}</h5>
                         </li>
                     </ul>
                 </transition>
@@ -299,7 +299,7 @@ export default {
         },
         addVideoFromLocal(e) {
             const files = e.target.files
-            console.log(files)
+            // console.log(files)
             if (files.length > 0) {
                 [].forEach.call(files, (item, index) => {
                     this.videoAddHandler(item)
@@ -332,110 +332,159 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.icon-box {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    i {
-        font-size: 18px;
-        cursor: pointer;
-    }
-    span {
-        position: relative;
-        padding: 6px;
-        &:hover {
-            background: #e9e8e8;
+.pmd-editor {
+    .icon-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        i {
+            font-size: 18px;
+            cursor: pointer;
         }
-    }
-    .icon-menu {
-        display: block;
-        position: absolute;
-        top: 60px;
-        left: -40px;
-        z-index: 99;
-        width: 120px;
-        box-shadow: 0 0px 3px #ccc;
-        line-height: 1.5;
-        background: #fff;
-        padding: 20px 0;
-        &.fade-enter-active,
-        &.fade-leave-active {
-            opacity: 1;
-        }
-
-        &.fade-enter,
-        &.fade-leave-active {
-            opacity: 0;
-        }
-        li {
+        span {
             position: relative;
-            text-align: center;
+            padding: 6px;
+            cursor: pointer;
             &:hover {
                 background: #e9e8e8;
             }
-            input {
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 100%;
-                height: 100%;
+        }
+        .icon-menu {
+            display: block;
+            position: absolute;
+            top: 42px;
+            left: -40px;
+            z-index: 99;
+            width: fit-content;
+            min-width: 120px;
+            box-shadow: 0 0px 3px #ccc;
+            line-height: 1.5;
+            background: #fff;
+            &.fade-enter-active,
+            &.fade-leave-active {
+                opacity: 1;
+            }
+
+            &.fade-enter,
+            &.fade-leave-active {
                 opacity: 0;
             }
+            li {
+                position: relative;
+                text-align: left;
+                white-space: nowrap;
+                overflow: hidden;
+                padding: 10px;
+                &:hover {
+                    background: #e9e8e8;
+                    cursor: pointer;
+                }
+                input {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                    &[type=file]::-webkit-file-upload-button {
+                        -webkit-appearance: button;
+                        cursor: pointer;
+                    }
+                }
+                h1 {
+                    display: block;
+                    font-size: 2em;
+                    margin: 0;
+                    font-weight: bold;
+                }
+                h2 {
+                    display: block;
+                    font-size: 1.5em;
+                    margin: 0;
+                    font-weight: bold;
+                }
+                h3 {
+                    display: block;
+                    font-size: 1.17em;
+                    margin: 0;
+                    font-weight: bold;
+                }
+                h4 {
+                    display: block;
+                    margin: 0;
+                    font-weight: bold;
+                }
+                h5 {
+                    display: block;
+                    font-size: .83em;
+                    margin: 0;
+                    font-weight: bold;
+                }
+                h6 {
+                    display: block;
+                    font-size: .67em;
+                    margin: 0;
+                    font-weight: bold;
+                }
+            }
         }
-    }
-    .image-pop,
-    .video-pop,
-    .link-pop,
-    .file-pop {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1600;
-        -webkit-transition: all 0.1s linear 0s;
-        transition: all 0.1s linear 0s;
-        .dialog {
+        .image-pop,
+        .video-pop,
+        .link-pop,
+        .file-pop {
             position: fixed;
-            box-sizing: border-box;
-            text-align: center;
-            width: 34%;
-            left: 34%;
-            height: auto;
-            padding: 40px;
-            top: 25%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1600;
             -webkit-transition: all 0.1s linear 0s;
             transition: all 0.1s linear 0s;
-            z-index: 3;
-            background: #fff;
-            border-radius: 2px;
-            box-shadow: 0 0px 5px rgba(255, 255, 255, 0.157),
-                0 0px 5px rgba(255, 255, 255, 0.227);
-            color: #333;
-            font-size: 14px;
-            input {
-                height: 36px;
-                line-height: 36px;
-                width: 100%;
-            }
-            .input-box {
-                padding: 6px;
-            }
-            .btn-box {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: center;
-                > div {
-                    flex: 1;
-                    border: 1px solid #ccc;
+            .dialog {
+                position: fixed;
+                box-sizing: border-box;
+                text-align: center;
+                width: 34%;
+                left: 34%;
+                height: auto;
+                padding: 40px;
+                top: 25%;
+                -webkit-transition: all 0.1s linear 0s;
+                transition: all 0.1s linear 0s;
+                z-index: 3;
+                background: #fff;
+                border-radius: 2px;
+                box-shadow: 0 0px 5px rgba(255, 255, 255, 0.157),
+                    0 0px 5px rgba(255, 255, 255, 0.227);
+                color: #333;
+                font-size: 14px;
+                input {
                     height: 36px;
                     line-height: 36px;
-                    margin: 6px;
-                    &.confirm {
-                        background: #409eff;
-                        color: #fff;
+                    width: 100%;
+                }
+                .input-box {
+                    padding: 6px;
+                }
+                .btn-box {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: center;
+                    > div {
+                        flex: 1;
+                        border: 1px solid #ccc;
+                        height: 36px;
+                        line-height: 36px;
+                        margin: 6px;
+                        &:hover {
+                            cursor: pointer;
+                        }
+                        &.confirm {
+                            background: #409eff;
+                            color: #fff;
+                        }
                     }
                 }
             }
