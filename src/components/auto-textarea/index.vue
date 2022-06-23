@@ -5,7 +5,7 @@
             ref="textarea"
             v-model="inputStr"
             @input="inputHandler"
-            :placeholder="placeholder"
+            :placeholder="$t('autoTextarea.placeholder')"
             :autofocus="autofocus"
         ></textarea>
     </div>
@@ -14,8 +14,7 @@
 export default {
     data() {
         return {
-            inputStr: this.value,
-            placeholder: this.$t('autoTextarea.placeholder')
+            inputStr: this.value
         }
     },
     props: {
