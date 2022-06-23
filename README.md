@@ -128,7 +128,13 @@ export default {
     }
 }
 ```
-
+### add i18n
+jaHelpMD and messages refer to /src/lang/en
+```
+setHelp('ja', jaHelpMD)
+setLangMessages('ja', messages)
+setI18nLocale('ja')
+```
 ## Changelog
 
 Detailed changes for each release are documented in the [release notes](https://github.com/li-xiaoqing/perfect-markdown/releases).
